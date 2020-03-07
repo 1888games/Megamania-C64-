@@ -1053,12 +1053,17 @@ ENEMIES:{
 
 		lda #1
 		sta BULLET.EnemyToFire
-		
-		lda PosX_MSB, x
-		sta BULLET.EnemyFireX_MSB
+
 
 		lda PosX_LSB, x
+		clc
+		adc #6
 		sta BULLET.EnemyFireX_LSB
+
+
+		lda PosX_MSB, x
+		adc #0
+		sta BULLET.EnemyFireX_MSB
 
 		Finish:
 

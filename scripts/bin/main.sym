@@ -80,9 +80,9 @@
   }
   .label CurrentWaveID=$1d3e
   .label CurrentMovementTime=$1d40
-  .label ClearEnemies=$232e {
-    .label Loop=$235e
-    .label Finish=$2376
+  .label ClearEnemies=$2333 {
+    .label Loop=$2363
+    .label Finish=$237b
   }
   .label XStart=$1d2d
   .label CheckShipCollision=$20a7 {
@@ -107,7 +107,7 @@
   }
   .label OrigPosX_LSB=$1dbf
   .label CurrentMovementID=$1d3f
-  .label SetupWave=$2216 {
+  .label SetupWave=$221b {
   }
   .label CurrentOddOffsetX=$1d5b
   .label CurrentLevelID=$1d3d
@@ -166,13 +166,13 @@
     .label Okay=$21d5
     .label FoundRow=$21f5
     .label OkayOnX=$21e9
-    .label Finish=$2215
+    .label Finish=$221a
   }
-  .label SpawnWave=$2251 {
-    .label FinishWaves=$227f
-    .label Loop=$230a
-    .label WaveDataAddress=$226e
-    .label Finish=$2310
+  .label SpawnWave=$2256 {
+    .label FinishWaves=$2284
+    .label Loop=$230f
+    .label WaveDataAddress=$2273
+    .label Finish=$2315
   }
   .label ResetLevel=$1e00 {
     .label XLoop=$1e0c
@@ -207,16 +207,16 @@
   .label EnemiesReady=$1d65
   .label CurrentYFrames=$1d48
   .label CurrentColumns=$1d4d
-  .label SpawnEnemies=$2377 {
-    .label StoreStartX=$23aa
-    .label EndRowLoop=$2403
-    .label RowLoop=$238b
-    .label OddRow=$2392
-    .label ColumnLoop=$23cd
-    .label StoreYForRow=$23b3
-    .label NextColumn=$23f2
-    .label EvenRow=$239e
-    .label Finish=$241a
+  .label SpawnEnemies=$237c {
+    .label StoreStartX=$23af
+    .label EndRowLoop=$2408
+    .label RowLoop=$2390
+    .label OddRow=$2397
+    .label ColumnLoop=$23d2
+    .label StoreYForRow=$23b8
+    .label NextColumn=$23f7
+    .label EvenRow=$23a3
+    .label Finish=$241f
   }
   .label CurrentFrames=$1d4b
   .label OddOffsetX=$1d2b
@@ -498,12 +498,12 @@
 }
 .label SFX_DEAD=$1
 .label SFX_HIT=$2
-.label RESET=$2426 {
-  .label EnemyData=$2426 {
-    .label XLoop=$2499
-    .label FinishX=$24ad
-    .label FinishY=$24c7
-    .label YLoop=$24af
+.label RESET=$242b {
+  .label EnemyData=$242b {
+    .label XLoop=$249e
+    .label FinishX=$24b2
+    .label FinishY=$24cc
+    .label YLoop=$24b4
   }
 }
 .label RowLoopEnd=$14
@@ -538,45 +538,45 @@
 .label CurrentX_LSB=$16
 .label Diff_LSB=$22
 .label MAIN=$2000 {
-  .label Loop=$2535 {
+  .label Loop=$253a {
   }
-  .label PerformFrameCodeFlag=$24f3
-  .label DetectMachine=$251e {
-    .label NTSC=$2531
-    .label w0=$251e
-    .label w1=$2521
-    .label PAL=$2534
-    .label Finish=$2534
+  .label PerformFrameCodeFlag=$24f8
+  .label DetectMachine=$2523 {
+    .label NTSC=$2536
+    .label w0=$2523
+    .label w1=$2526
+    .label PAL=$2539
+    .label Finish=$2539
   }
-  .label GameOver=$25fb {
+  .label GameOver=$2600 {
   }
   .label GameOverTimeOut=$78
-  .label Difficulty=$24f9
-  .label GameOverTimer=$24f0
-  .label InitialCooldown=$24f5
-  .label MachineType=$24f7
-  .label ResetGame=$25d2 {
+  .label Difficulty=$24fe
+  .label GameOverTimer=$24f5
+  .label InitialCooldown=$24fa
+  .label MachineType=$24fc
+  .label ResetGame=$25d7 {
   }
-  .label GameActive=$24f1
-  .label TitleScreen=$2589 {
+  .label GameActive=$24f6
+  .label TitleScreen=$258e {
   }
   .label LifeLostTimeOut=$1e
-  .label Entry=$24fb
-  .label FrameCode=$253d {
-    .label GamePaused=$2547
+  .label Entry=$2500
+  .label FrameCode=$2542 {
+    .label GamePaused=$254c
   }
-  .label GameScreen=$255a {
+  .label GameScreen=$255f {
   }
-  .label StartGame=$2554 {
+  .label StartGame=$2559 {
   }
-  .label LifeLostTimer=$24f2
-  .label GameIsOver=$24f4
-  .label ScreenColour=$24f8
-  .label Finish=$2518
-  .label TitleLoop=$25bc {
-    .label WaitForRaster=$25c8
+  .label LifeLostTimer=$24f7
+  .label GameIsOver=$24f9
+  .label ScreenColour=$24fd
+  .label Finish=$251d
+  .label TitleLoop=$25c1 {
+    .label WaitForRaster=$25cd
   }
-  .label Players=$24fa
+  .label Players=$24ff
 }
 .label NewBulletX_MSB=$1b
 .label sfx_hit=$15fe
