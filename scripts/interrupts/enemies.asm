@@ -28,9 +28,9 @@ ENEMIES:{
 	GapY:			.byte 023, 035
 	OddOffsetX:		.byte 040, 035
 	XStart:			.byte 060, 030
-	XStart_Odd:		.byte 080, 255
+	XStart_Odd:		.byte 060, 255
 	XStart_MSB:		.byte 254, 255
-	Xstart_MSB_Odd:	.byte 002, 000
+	Xstart_MSB_Odd:	.byte 001, 000
 	YStart:			.byte 050, 020
 	YStart_MSB:		.byte 000, 000
 	Colours:		.byte 010, 007
@@ -42,7 +42,7 @@ ENEMIES:{
 	CurrentMovementTime:	.byte 0, 0
 
 	CurrentXSpeed:			.byte 0
-	CurrentXDirection:		.byte 0
+	CurrentXDirection:		.byte 0, 0
 	CurrentYSpeed:			.byte 0
 	CurrentXFrames:			.byte 0, 0
 	CurrentYFrames:			.byte 0, 0
@@ -60,9 +60,9 @@ ENEMIES:{
 	CurrentGapX:			.byte 0
 	CurrentGapY:			.byte 0
 	CurrentOddOffsetX:		.byte 0
-	CurrentXStart_LSB:		.byte 0
+	CurrentXStart_LSB:		.byte 0, 0
 	CurrentYStart_LSB:		.byte 0
-	CurrentXStart_MSB:		.byte 0
+	CurrentXStart_MSB:		.byte 0, 0
 	CurrentYStart_MSB:		.byte 0
 	CurrentFramesPerFrame:	.byte 0
 	FrameCounter:			.byte 0
@@ -498,7 +498,9 @@ ENEMIES:{
 
 			Continue:
 
-			lda CurrentXDirection
+			lda OddorEven, x
+			tay
+			lda CurrentXDirection, y
 			beq MoveRight
 
 			MoveLeft:
@@ -526,7 +528,7 @@ ENEMIES:{
 
 				lda #1
 				sta PosX_MSB, x
-				jmp CheckCollision
+				jmp EndLoop
 
 
 			MoveRight:
@@ -559,6 +561,7 @@ ENEMIES:{
 
 				lda #0
 				sta PosX_MSB, x
+				jmp EndLoop
 
 			
 			CheckCollision:
@@ -791,7 +794,7 @@ ENEMIES:{
 		 	stx Row
 
 		 	lda PosY_MSB, x
-		 	cmp #3
+		 	cmp #2
 		 	beq EndLoop
 
 		 	cmp #255
@@ -991,6 +994,8 @@ ENEMIES:{
 	
 	CheckWhetherToFire: {
 
+		lda SHIP.Paused
+		bne Finish
 
 		lda BULLET.EnemyToFire
 		bne Finish
@@ -1074,6 +1079,8 @@ ENEMIES:{
 		lda X_Direction, x
 		sta CurrentXDirection
 
+		lda X_Direction_Odd, x
+		sta CurrentXDirection + 1
 
 		lda FramesPerX, x
 		sta CurrentXFrames + 1
@@ -1155,6 +1162,12 @@ ENEMIES:{
 
 			lda XStart, y
 			sta CurrentXStart_LSB
+
+			lda XStart_Odd, y
+			sta CurrentXStart_LSB + 1
+
+			lda Xstart_MSB_Odd, y
+			sta CurrentXStart_MSB + 1
 
 			lda XStart_MSB, y
 			sta CurrentXStart_MSB
@@ -1292,15 +1305,17 @@ ENEMIES:{
 			
 				lda #1
 				sta RowIsOdd
+				tay
 
 				clc
-				lda CurrentXStart_LSB
+				lda CurrentXStart_LSB + 1
 				jmp StoreStartX
 
 			EvenRow:
 
 				lda #0
 				sta RowIsOdd
+				tay
 
 				lda CurrentXStart_LSB
 				clc
@@ -1310,13 +1325,14 @@ ENEMIES:{
 
 				sta CurrentX_LSB
 
-				lda CurrentXStart_MSB
+				lda CurrentXStart_MSB, y
 				adc #00
 				sta CurrentX_MSB
 
 				
 			StoreYForRow:
 
+				ldy Row
 				lda CurrentY_LSB
 				sta PosY_LSB, y
 				sta OrigPosY_LSB, y

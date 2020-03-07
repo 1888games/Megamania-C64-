@@ -151,12 +151,19 @@ SHIP:{
 
 			lda #0
 			sta Dead
+
+			lda #1
+			sta Paused
+
 			//sta VIC.SPRITE_COLOR_0 
 
 			jsr Reset
 			jsr LIVES.LoseLife
 			jsr ENERGY.Reset
+			jsr BULLET.Reset
 			jsr ENEMIES.ResetLevel
+
+
 			jmp Finish
 
 			NotEnd:

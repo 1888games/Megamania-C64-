@@ -44,16 +44,12 @@ BULLET:{
 
 	Reset: {
 		
-		//jsr PlayerFire
-
-
-		//ldx #1
-
-		//jsr EnemyFire
-
-		//ldx #2
-
-		//jsr EnemyFire
+		
+		lda #0
+		sta Active
+		sta Active + 1
+		sta Active + 2
+		sta EnemyToFire
 
 		rts
 
@@ -73,6 +69,9 @@ BULLET:{
 
 
 	EnemyFire: {
+
+		lda SHIP.Paused
+		bne Finish
 
 		ldx #1
 		lda Active, x
