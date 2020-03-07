@@ -732,8 +732,6 @@ BULLET:{
 
 	DestroyBullet: {
 
-		sfx(2)
-
 		lda #0
 		sta Active, x	
 		sta Destroy, x

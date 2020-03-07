@@ -215,6 +215,11 @@ ENEMIES:{
 
 	SetXPosition: {
 
+		 ldx CurrentDrawRow
+		 lda IRQ_Data, x
+		 sta RowIRQIndex
+		 tay
+
 		ldx #0	// reset sprite positions so that unused sprites won't be seen
 		stx VIC.SPRITE_0_X + 2
 		stx VIC.SPRITE_0_X + 4			
@@ -332,12 +337,7 @@ ENEMIES:{
 
 	SetSpritePointers: {
 
-		 ldx CurrentDrawRow
-		 lda IRQ_Data, x
-		 sta RowIRQIndex
-		 tay
-		// lda TheFrames, y
-
+		
 
 		lda CurrentStartFrame
 		clc
@@ -364,7 +364,7 @@ ENEMIES:{
 		
 		// DRAW SPRITES HERE
 
-		jsr SetSpritePointers
+
 		jsr SetXPosition
 		jsr SetYPosition
 	
@@ -881,10 +881,14 @@ ENEMIES:{
 		inc CurrentFrame
 		lda CurrentFrame
 		cmp CurrentFrames
-		bcc Finish
+		bcc SetPointers
 
 		lda #0
 		sta CurrentFrame
+
+		SetPointers:
+
+		jsr SetSpritePointers
 
 		Finish:
 
