@@ -1,5 +1,5 @@
 .label CurrentY_LSB=$18
-.label JOY_FIRE_LAST=$28
+.label JOY_FIRE_LAST=$29
 .label JOY_DOWN=$2
 .label LivesLeft=$10
 .label SHIP=$1690 {
@@ -57,216 +57,221 @@
   .label AnyMovement=$1695
 }
 .label ENEMIES=$1ce4 {
-  .label PosY_LSB=$1d6e
-  .label CurrentGapX=$1d36
-  .label SetSpritePointers=$1ee4 {
+  .label PosY_LSB=$1d87
+  .label CurrentGapX=$1d3d
+  .label SetSpritePointers=$1eff {
   }
-  .label NewLevel=$1f39 {
+  .label NewLevel=$1f54 {
   }
-  .label CurrentGapY=$1d37
+  .label CurrentGapY=$1d3e
   .label X_Speed=$1ce8
-  .label FramesPerFrame=$1d19
-  .label CurrentStartFrame=$1d35
-  .label Update=$2166 {
-    .label Finish=$217d
+  .label FramesPerFrame=$1d20
+  .label CurrentStartFrame=$1d3c
+  .label Update=$2181 {
+    .label Finish=$2198
   }
-  .label SetXPosition=$1e4c {
-    .label Loop=$1e7c
-    .label UpdateMSB=$1e85
-    .label XPosition=$1e9f
-    .label EndLoop=$1ea9
-    .label MSB_Off=$1e96
-    .label Finish=$1eb5
+  .label SetXPosition=$1e65 {
+    .label Loop=$1e95
+    .label XPosition=$1eba
+    .label MSB_On=$1ea5
+    .label EndLoop=$1ec4
+    .label MSB_Off=$1eb1
+    .label Finish=$1ed0
   }
-  .label CurrentWaveID=$1d1c
-  .label CurrentMovementTime=$1d1e
-  .label ClearEnemies=$22d7 {
-    .label Loop=$2307
-    .label Finish=$231f
+  .label CurrentWaveID=$1d23
+  .label CurrentMovementTime=$1d25
+  .label ClearEnemies=$22f2 {
+    .label Loop=$2322
+    .label Finish=$233a
   }
-  .label XStart=$1d0f
-  .label CheckShipCollision=$2067 {
-    .label Loop=$2076
-    .label Positive=$208b
-    .label EndLoop=$2095
-    .label Finish=$209d
+  .label XStart=$1d12
+  .label CheckShipCollision=$2082 {
+    .label Loop=$2091
+    .label Positive=$20a6
+    .label EndLoop=$20b0
+    .label Finish=$20b8
   }
-  .label Reset=$1dc0 {
+  .label Reset=$1dd9 {
   }
-  .label Times2=$1db9
-  .label CurrentWaves=$1d2c
-  .label Frames=$1d03
-  .label UpdateSpriteFrameID=$2102 {
-    .label SetPointers=$2123
-    .label Finish=$2126
-    .label UpdateFrame=$210d
+  .label Times2=$1dd2
+  .label CurrentWaves=$1d33
+  .label Frames=$1d06
+  .label UpdateSpriteFrameID=$211d {
+    .label SetPointers=$213e
+    .label Finish=$2141
+    .label UpdateFrame=$2128
   }
-  .label CheckWhetherLevelComplete=$2144 {
-    .label StoreLevel=$2162
-    .label Finish=$2165
+  .label CheckWhetherLevelComplete=$215f {
+    .label StoreLevel=$217d
+    .label Finish=$2180
   }
-  .label OrigPosX_LSB=$1d88
-  .label CurrentMovementID=$1d1d
-  .label SetupWave=$21d1 {
+  .label OrigPosX_LSB=$1da1
+  .label CurrentMovementID=$1d24
+  .label SetupWave=$21ec {
   }
-  .label CurrentOddOffsetX=$1d38
-  .label CurrentLevelID=$1d1b
-  .label CurrentYStart_LSB=$1d3a
-  .label CurrentXStart_MSB=$1d3b
+  .label CurrentOddOffsetX=$1d3f
+  .label CurrentLevelID=$1d22
+  .label CurrentYStart_LSB=$1d41
+  .label CurrentXStart_MSB=$1d42
   .label Y_Speed=$1ceb
-  .label UpdateWave=$2127 {
-    .label NextMovement=$213d
-    .label MovementComplete=$2132
-    .label Finish=$2143
+  .label UpdateWave=$2142 {
+    .label NextMovement=$2158
+    .label MovementComplete=$214d
+    .label Finish=$215e
   }
-  .label YStart=$1d13
-  .label CurrentXDirection=$1d21
-  .label OrigPosY_LSB=$1da2
-  .label YStart_MSB=$1d15
-  .label PosX_MSB=$1d42
-  .label Wavelengths=$1cff
-  .label PlayerDied=$1e29 {
+  .label YStart=$1d1a
+  .label CurrentXDirection=$1d28
+  .label OrigPosY_LSB=$1dbb
+  .label YStart_MSB=$1d1c
+  .label PosX_MSB=$1d49
+  .label Wavelengths=$1d02
+  .label PlayerDied=$1e42 {
   }
-  .label UpdateXPosition=$1f52 {
-    .label Loop=$1f65
-    .label PositiveDiff=$2030
-    .label CheckLeftWrap=$1f88
-    .label MoveLeft=$1f76
-    .label CheckLSB=$1fb7
-    .label ReadyToMove=$1f5d
-    .label CheckXWrap=$1fb0
-    .label Continue=$1f71
-    .label CheckYPosition=$2013
-    .label MoveRight=$1f9e
-    .label ContinueToNextRow=$2057
-    .label Negative=$1ff7
-    .label Positive=$2007
-    .label TooFarAway=$205a
-    .label NextRow=$2051
-    .label EndLoop=$205c
-    .label BulletLive=$1fd8
-    .label OkayToCollide=$1fe4
-    .label NoYCollision=$205a
-    .label Finish=$2066
-    .label CheckCollision=$1fc8
+  .label UpdateXPosition=$1f6d {
+    .label Loop=$1f80
+    .label PositiveDiff=$204b
+    .label CheckLeftWrap=$1fa3
+    .label MoveLeft=$1f91
+    .label CheckLSB=$1fd2
+    .label ReadyToMove=$1f78
+    .label CheckXWrap=$1fcb
+    .label Continue=$1f8c
+    .label CheckYPosition=$202e
+    .label MoveRight=$1fb9
+    .label ContinueToNextRow=$2072
+    .label Negative=$2012
+    .label Positive=$2022
+    .label TooFarAway=$2075
+    .label NextRow=$206c
+    .label EndLoop=$2077
+    .label BulletLive=$1ff3
+    .label OkayToCollide=$1fff
+    .label NoYCollision=$2075
+    .label Finish=$2081
+    .label CheckCollision=$1fe3
   }
-  .label GapY=$1d0b
-  .label PlayerReady=$1e10 {
-    .label LoadNewLevel=$1e1d
-    .label Finish=$1e28
+  .label OddorEven=$1d6d
+  .label X_Direction_Odd=$1cf1
+  .label Xstart_MSB_Odd=$1d18
+  .label GapY=$1d0e
+  .label PlayerReady=$1e29 {
+    .label LoadNewLevel=$1e36
+    .label Finish=$1e41
   }
   .label ShipCollisionMin=$b2
-  .label GapX=$1d09
-  .label PosY_MSB=$1d66
-  .label CheckWhetherToFire=$217e {
-    .label Loop=$21a6
-    .label Okay=$2190
-    .label FoundRow=$21b0
-    .label OkayOnX=$21a4
-    .label Finish=$21d0
+  .label GapX=$1d0c
+  .label PosY_MSB=$1d7f
+  .label CheckWhetherToFire=$2199 {
+    .label Loop=$21c1
+    .label Okay=$21ab
+    .label FoundRow=$21cb
+    .label OkayOnX=$21bf
+    .label Finish=$21eb
   }
-  .label SpawnWave=$2206 {
-    .label FinishWaves=$2234
-    .label Loop=$22b3
-    .label WaveDataAddress=$2223
-    .label Finish=$22b9
+  .label SpawnWave=$2221 {
+    .label FinishWaves=$224f
+    .label Loop=$22ce
+    .label WaveDataAddress=$223e
+    .label Finish=$22d4
   }
-  .label ResetLevel=$1dc9 {
-    .label XLoop=$1dd5
-    .label CopyY=$1df0
-    .label YLoop=$1df2
-    .label Finish=$1e0f
-    .label EndXLoop=$1de8
-    .label EndYLoop=$1e07
+  .label ResetLevel=$1de2 {
+    .label XLoop=$1dee
+    .label CopyY=$1e09
+    .label YLoop=$1e0b
+    .label Finish=$1e28
+    .label EndXLoop=$1e01
+    .label EndYLoop=$1e20
   }
   .label MinEnemyYPosition=$28
-  .label CurrentYSpeed=$1d22
+  .label CurrentYSpeed=$1d29
   .label X_Direction=$1cee
-  .label Time=$1cf7
-  .label XStart_MSB=$1d11
+  .label Time=$1cfa
+  .label XStart_MSB=$1d16
   .label DrawRows=$7
-  .label CurrentWaveLength=$1d34
+  .label CurrentWaveLength=$1d3b
   .label MaxEnemyYPosition=$ca
-  .label RowFirstEnemyIndex=$1db1
-  .label StartFrames=$1d01
-  .label CurrentDrawRow=$1d2b
-  .label CurrentXStart_LSB=$1d39
-  .label Colours=$1d17
-  .label GetNextIRQLine=$1f08 {
-    .label Okay=$1f25
-    .label NextRow=$1f28
-    .label FinishedDrawing=$1f36
-    .label CheckLoop=$1f08
-    .label Finish=$1f38
+  .label RowFirstEnemyIndex=$1dca
+  .label StartFrames=$1d04
+  .label CurrentDrawRow=$1d32
+  .label CurrentXStart_LSB=$1d40
+  .label Colours=$1d1e
+  .label GetNextIRQLine=$1f23 {
+    .label Okay=$1f40
+    .label NextRow=$1f43
+    .label FinishedDrawing=$1f51
+    .label CheckLoop=$1f23
+    .label Finish=$1f53
   }
   .label Wave_Data=$1ce4
-  .label EnemiesSpawned=$1d3f
-  .label EnemiesReady=$1d40
-  .label CurrentYFrames=$1d25
-  .label CurrentColumns=$1d2a
-  .label SpawnEnemies=$2320 {
-    .label StoreStartX=$2347
-    .label EndRowLoop=$2399
-    .label RowLoop=$2332
-    .label OddRow=$2339
-    .label ColumnLoop=$2368
-    .label StoreYForRow=$2350
-    .label NextColumn=$2388
-    .label EvenRow=$2340
-    .label Finish=$23b0
+  .label EnemiesSpawned=$1d46
+  .label EnemiesReady=$1d47
+  .label CurrentYFrames=$1d2c
+  .label CurrentColumns=$1d31
+  .label SpawnEnemies=$233b {
+    .label StoreStartX=$236c
+    .label EndRowLoop=$23c3
+    .label RowLoop=$234f
+    .label OddRow=$2356
+    .label ColumnLoop=$238d
+    .label StoreYForRow=$2375
+    .label NextColumn=$23b2
+    .label EvenRow=$2361
+    .label Finish=$23da
   }
-  .label CurrentFrames=$1d28
-  .label OddOffsetX=$1d0d
-  .label Rows=$1d05
-  .label CurrentXSpeed=$1d20
-  .label CurrentFrame=$1d27
-  .label FrameCounter=$1d3e
-  .label OrigPosX_MSB=$1d76
+  .label CurrentFrames=$1d2f
+  .label OddOffsetX=$1d10
+  .label Rows=$1d08
+  .label CurrentXSpeed=$1d27
+  .label CurrentFrame=$1d2e
+  .label FrameCounter=$1d45
+  .label OrigPosX_MSB=$1d8f
   .label NumberOfLevels=$2
-  .label DrawRow=$1f01 {
-    .label Finish=$1f07
+  .label DrawRow=$1f1c {
+    .label Finish=$1f22
   }
-  .label Columns=$1d07
-  .label IRQ_Data=$1daa
-  .label CurrentYStart_MSB=$1d3c
-  .label CurrentFramesPerFrame=$1d3d
-  .label UpdateYPosition=$209e {
-    .label Loop=$20b1
-    .label WrapY=$20d2
-    .label ReadyToMove=$20a9
-    .label CopyLoop=$20e3
-    .label EndLoop=$20f7
-    .label EndCopyLoop=$20f2
-    .label Finish=$2101
+  .label Columns=$1d0a
+  .label IRQ_Data=$1dc3
+  .label CurrentYStart_MSB=$1d43
+  .label CurrentFramesPerFrame=$1d44
+  .label UpdateYPosition=$20b9 {
+    .label Loop=$20cc
+    .label WrapY=$20ed
+    .label ReadyToMove=$20c4
+    .label CopyLoop=$20fe
+    .label EndLoop=$2112
+    .label EndCopyLoop=$210d
+    .label Finish=$211c
   }
-  .label CurrentRows=$1d29
-  .label OrigPosY_MSB=$1d9a
-  .label SetYPosition=$1eb6 {
-    .label AllRowsDrawn=$1ede
-    .label Finish=$1ee3
+  .label CurrentRows=$1d30
+  .label OrigPosY_MSB=$1db3
+  .label XStart_Odd=$1d14
+  .label SetYPosition=$1ed1 {
+    .label AllRowsDrawn=$1ef9
+    .label Finish=$1efe
   }
-  .label CurrentXFrames=$1d23
-  .label PosX_LSB=$1d54
-  .label Level_2=$1cfd
-  .label UpdateXPositionOld=$1f3d {
-    .label LoopX=$1f3f
-    .label Finish=$1f51
+  .label CurrentXFrames=$1d2a
+  .label PosX_LSB=$1d5b
+  .label Level_2=$1d00
+  .label UpdateXPositionOld=$1f58 {
+    .label LoopX=$1f5a
+    .label Finish=$1f6c
   }
-  .label Level_1=$1cfa
-  .label FramesPerY=$1cf4
-  .label FramesPerX=$1cf1
-  .label LevelActive=$1d41
+  .label Level_1=$1cfd
+  .label FramesPerY=$1cf7
+  .label FramesPerX=$1cf4
+  .label LevelActive=$1d48
 }
 .label play_no_music=$15ae {
   .label channel=$15c8
   .label times7=$15c9
 }
-.label JOY_LEFT_LAST=$25
+.label JOY_LEFT_LAST=$26
 .label WaveAddress=$12
 .label CharID=$6
 .label MAP_TILES=$8100
-.label JOY_RIGHT_NOW=$29
+.label JOY_RIGHT_NOW=$2a
 .label SFX_DOOR=$7
+.label RowIsOdd=$1f
 .label set_sfx_routine=$1590 {
 }
 .label sfx_door=$1672
@@ -310,10 +315,10 @@
   .label ShipIRQLIne=$2
 }
 .label ShowDebug=$128a
-.label JOY_UP_NOW=$2c
+.label JOY_UP_NOW=$2d
 .label Colour=$f
-.label Diff_MSB=$20
-.label JOY_UP_LAST=$27
+.label Diff_MSB=$21
+.label JOY_UP_LAST=$28
 .label ALL_ON=$ff
 .label RANDOM=$1537 {
   .label RandomAdd=$1537
@@ -331,7 +336,7 @@
   }
 }
 .label Amount=$a
-.label JOY_DOWN_NOW=$2b
+.label JOY_DOWN_NOW=$2c
 .label RowIRQIndex=$15
 .label SFX_PLANE=$6
 .label SFX_BONUS=$8
@@ -447,9 +452,9 @@
 }
 .label play_with_music=$15cc {
 }
-.label ZP_COUNTER=$1f
+.label ZP_COUNTER=$20
 .label music_on=$158f
-.label JOY_RIGHT_LAST=$24
+.label JOY_RIGHT_LAST=$25
 .label NextRowStartIndex=$1d
 .label ZERO=$0
 .label INPUT=$11c2 {
@@ -493,12 +498,12 @@
 }
 .label SFX_DEAD=$1
 .label SFX_HIT=$2
-.label RESET=$23bc {
-  .label EnemyData=$23bc {
-    .label XLoop=$242f
-    .label FinishX=$2443
-    .label FinishY=$245d
-    .label YLoop=$2445
+.label RESET=$23e6 {
+  .label EnemyData=$23e6 {
+    .label XLoop=$2459
+    .label FinishX=$246d
+    .label FinishY=$2487
+    .label YLoop=$246f
   }
 }
 .label RowLoopEnd=$14
@@ -531,55 +536,55 @@
 }
 .label CHAR_SET=$f000
 .label CurrentX_LSB=$16
-.label Diff_LSB=$21
+.label Diff_LSB=$22
 .label MAIN=$2000 {
-  .label Loop=$24cb {
+  .label Loop=$24f5 {
   }
-  .label PerformFrameCodeFlag=$2489
-  .label DetectMachine=$24b4 {
-    .label NTSC=$24c7
-    .label w0=$24b4
-    .label w1=$24b7
-    .label PAL=$24ca
-    .label Finish=$24ca
+  .label PerformFrameCodeFlag=$24b3
+  .label DetectMachine=$24de {
+    .label NTSC=$24f1
+    .label w0=$24de
+    .label w1=$24e1
+    .label PAL=$24f4
+    .label Finish=$24f4
   }
-  .label GameOver=$2591 {
+  .label GameOver=$25bb {
   }
   .label GameOverTimeOut=$78
-  .label Difficulty=$248f
-  .label GameOverTimer=$2486
-  .label InitialCooldown=$248b
-  .label MachineType=$248d
-  .label ResetGame=$2568 {
+  .label Difficulty=$24b9
+  .label GameOverTimer=$24b0
+  .label InitialCooldown=$24b5
+  .label MachineType=$24b7
+  .label ResetGame=$2592 {
   }
-  .label GameActive=$2487
-  .label TitleScreen=$251f {
+  .label GameActive=$24b1
+  .label TitleScreen=$2549 {
   }
   .label LifeLostTimeOut=$1e
-  .label Entry=$2491
-  .label FrameCode=$24d3 {
-    .label GamePaused=$24dd
+  .label Entry=$24bb
+  .label FrameCode=$24fd {
+    .label GamePaused=$2507
   }
-  .label GameScreen=$24f0 {
+  .label GameScreen=$251a {
   }
-  .label StartGame=$24ea {
+  .label StartGame=$2514 {
   }
-  .label LifeLostTimer=$2488
-  .label GameIsOver=$248a
-  .label ScreenColour=$248e
-  .label Finish=$24ae
-  .label TitleLoop=$2552 {
-    .label WaitForRaster=$255e
+  .label LifeLostTimer=$24b2
+  .label GameIsOver=$24b4
+  .label ScreenColour=$24b8
+  .label Finish=$24d8
+  .label TitleLoop=$257c {
+    .label WaitForRaster=$2588
   }
-  .label Players=$2490
+  .label Players=$24ba
 }
 .label NewBulletX_MSB=$1b
 .label sfx_hit=$15fe
-.label JOY_DOWN_LAST=$26
+.label JOY_DOWN_LAST=$27
 .label BulletPositionAdjX=$d
 .label BulletPositionAdjY=$e
 .label JOY_RIGHT=$8
-.label JOY_FIRE_NOW=$2d
+.label JOY_FIRE_NOW=$2e
 .label VECTOR2=$4
 .label sfx_fire=$15d8
 .label ENERGY=$1b74 {
@@ -622,7 +627,7 @@
   .label EnergyBarRow=$14
 }
 .label VECTOR1=$2
-.label JOY_LEFT_NOW=$2a
+.label JOY_LEFT_NOW=$2b
 .label SFX_FIRE=$0
 .label SPRITE_POINTERS=$c3f8
 .label SFX_JUMP=$4
@@ -739,8 +744,8 @@
 .label wavetable_l=$167e
 .label NewBulletX_LSB=$1a
 .label SFX_LIFT=$5
-.label JOY_ZP1=$22
-.label JOY_ZP2=$23
+.label JOY_ZP1=$23
+.label JOY_ZP2=$24
 .label wavetable_h=$1687
 .label VIC=$1000 {
   .label SPRITE_BG_COLLISION=$d01f

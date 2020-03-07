@@ -30,11 +30,13 @@ NewBulletX_MSB:		.byte 0
 NewBulletY:			.byte 100
 NextRowStartIndex:	.byte 0
 NewBulletEnemyID:	.byte 0
+RowIsOdd:			.byte 0
 
 ZP_COUNTER: 	.byte $00
 
 Diff_MSB:		.byte $00
 Diff_LSB:		.byte 400
+
 
 
 

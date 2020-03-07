@@ -8,12 +8,13 @@ ENEMIES:{
 
 	Wave_Data: 	.word Level_1, Level_2
 
-	X_Speed:	  .byte 002, 000, 002
-	Y_Speed:	  .byte 000, 001, 000
-	X_Direction:  .byte 000, 000, 000
-	FramesPerX:	  .byte 000, 000, 000
-	FramesPerY:	  .byte 003, 001, 003
-	Time:		  .byte 060, 040, 060
+	X_Speed:	  		.byte 002, 000, 002
+	Y_Speed:	  		.byte 001, 001, 000
+	X_Direction:  		.byte 000, 000, 000
+	X_Direction_Odd:	.byte 001, 000, 000
+	FramesPerX:	  		.byte 000, 000, 000
+	FramesPerY:	  		.byte 003, 001, 003
+	Time:		  		.byte 060, 040, 060
 
 	Level_1:		.byte 0, 1, 2
 	Level_2:		.byte 1, 2
@@ -27,7 +28,9 @@ ENEMIES:{
 	GapY:			.byte 023, 035
 	OddOffsetX:		.byte 040, 035
 	XStart:			.byte 060, 030
+	XStart_Odd:		.byte 080, 255
 	XStart_MSB:		.byte 254, 255
+	Xstart_MSB_Odd:	.byte 002, 000
 	YStart:			.byte 050, 020
 	YStart_MSB:		.byte 000, 000
 	Colours:		.byte 010, 007
@@ -73,6 +76,7 @@ ENEMIES:{
 
 	PosX_MSB:		.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	PosX_LSB:		.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	OddorEven:		.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	PosY_MSB:		.byte 0, 0, 0, 0, 0, 0, 0, 0
 	PosY_LSB:		.byte 0, 0, 0, 0, 0, 0, 0, 0
 
@@ -116,7 +120,7 @@ ENEMIES:{
 		XLoop:
 
 			lda PosX_MSB, x
-			cmp #02
+			cmp #03
 			beq EndXLoop
 
 			lda OrigPosX_MSB, x
@@ -248,14 +252,15 @@ ENEMIES:{
 
 	 		// check whether enemy is active, 2=dead, 255 = x < 0
 	 		lda PosX_MSB, x
-			cmp #2
-	 		bcs EndLoop
+			cmp #0
+	 		beq MSB_Off
 
-	 		UpdateMSB:
+	 		cmp #1
+	 		beq MSB_On
 
-	 			// check MSB and apply correct adjustment to register
-	 			lda PosX_MSB, x
-				beq MSB_Off
+	 		jmp EndLoop
+
+			MSB_On:
 
 				lda VIC.SPRITE_MSB
 				ora VIC.MSB_On + 1, y
@@ -358,11 +363,6 @@ ENEMIES:{
 
 
 	DrawRow: {
-
-		//.break
-
-		
-		// DRAW SPRITES HERE
 
 
 		jsr SetXPosition
@@ -491,7 +491,7 @@ ENEMIES:{
 			stx CurrentID
 
 			lda PosX_MSB, x
-			cmp #2
+			cmp #3
 			bne Continue
 
 			jmp EndLoop
@@ -617,7 +617,7 @@ ENEMIES:{
 					bne TooFarAway
 
 					lda Diff_LSB
-					cmp #10
+					cmp #9
 					bcs TooFarAway	
 
 					// COLLISION ON AXIS
@@ -675,7 +675,7 @@ ENEMIES:{
 
 			 	//	inc $d021
 
-			 		lda #2
+			 		lda #3
 			 		sta PosX_MSB, x
 			 		sta BULLET.Destroy
 			 		dec EnemiesSpawned
@@ -791,7 +791,7 @@ ENEMIES:{
 		 	stx Row
 
 		 	lda PosY_MSB, x
-		 	cmp #2
+		 	cmp #3
 		 	beq EndLoop
 
 		 	cmp #255
@@ -1007,7 +1007,7 @@ ENEMIES:{
 
 		jsr RANDOM.Get
 
-		and #%00111111
+		and #%01111111
 
 		cmp #18
 		bcs Finish
@@ -1241,7 +1241,7 @@ ENEMIES:{
 
 		Loop:
 
-			lda #2
+			lda #3
 			sta PosX_MSB, x
 			sta OrigPosX_MSB, x
 
@@ -1266,6 +1266,7 @@ ENEMIES:{
 
 		ldy #0		// current row
 		sty EnemiesSpawned
+		sty RowIsOdd
 
 		lda CurrentYStart_MSB
 		sta CurrentY_MSB
@@ -1288,11 +1289,18 @@ ENEMIES:{
 
 			OddRow:
 
+			
+				lda #1
+				sta RowIsOdd
+
 				clc
 				lda CurrentXStart_LSB
 				jmp StoreStartX
 
 			EvenRow:
+
+				lda #0
+				sta RowIsOdd
 
 				lda CurrentXStart_LSB
 				clc
@@ -1328,6 +1336,9 @@ ENEMIES:{
 
 				ldx EnemiesSpawned
 				inc EnemiesSpawned
+
+				lda RowIsOdd
+				sta OddorEven, x
 
 				lda CurrentX_LSB
 				sta PosX_LSB, x

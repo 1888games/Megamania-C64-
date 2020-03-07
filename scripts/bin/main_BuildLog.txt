@@ -8,10 +8,10 @@ Writing prg file: C:\Users\Nick\Dropbox\C64\Projects\Megamania\scripts\bin\main.
 Memory Map
 ----------
 Default-segment:
-  *$0002-$002d Temp vars zero page
+  *$0002-$002e Temp vars zero page
   $0801-$080c Basic
   $080e-$080d Basic End
-  $1000-$25b4 Modules
+  $1000-$25de Modules
   $3000-$335e sid
   $8000-$80ef Game Map
   $8100-$8187 Game Tiles
