@@ -431,7 +431,7 @@ BULLET:{
 		cpx #0
 		bne Finish
 
-		SetDebugBorder(13)
+		//SetDebugBorder(13)
 	
 		ldy CurrentCollisionRow	// loop through rows of ships
 
@@ -491,7 +491,7 @@ BULLET:{
 
 		 Finish:
 
-		 	SetDebugBorder(15)
+		 	//SetDebugBorder(15)
 
 			rts
 
@@ -570,7 +570,7 @@ BULLET:{
 	UpdateSpecificBullet: {
 
 		stx CurrentID
-		SetDebugBorder(2)
+	//	SetDebugBorder(2)
 
 		lda Active, x
 		beq Finish
@@ -600,7 +600,7 @@ BULLET:{
 		Loop:
 
 			stx CurrentID
-			SetDebugBorder(3)
+		//	SetDebugBorder(3)
 
 			lda Destroy, x
 			beq DontDestroy

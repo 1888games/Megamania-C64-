@@ -184,7 +184,7 @@ SHIP:{
 
 	Update: {	
 
-		SetDebugBorder(7)
+		//SetDebugBorder(7)
 
 		lda #1
 		sta AnyMovement

@@ -44,29 +44,28 @@ Sound: Available sound devices: dx wmm dummy fs dump wav voc iff aiff flac ogg s
 Keyboard: Loading keymap `C:\C64\Tools\Vice\C64\gtk3_sym.vkm'.
 Keyboard: Warning - gtk3_sym.vkm: !LCBM !VCBM !LCTRL !VCTRL not defined.
 AUTOSTART: Autodetecting image type of `bin/main.prg'.
-Filesystem Image Probe: Error - Import GCR: Unknown GCR image version 52.
+Filesystem Image Probe: Error - Import GCR: Unknown GCR image version 53.
 Filesystem Image: Unknown disk image `bin/main.prg'.
 Tape: Error - Cannot open file `bin/main.prg'
 Error - CRT header invalid.
 CART: 'bin/main.prg' is not a valid CRT file.
 AUTOSTART: Loading PRG file `bin/main.prg' with direct RAM injection.
 AUTOSTART: Resetting the machine to autostart '*'
-VIC-II: VSP Bug: safe channels are: . Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 23. Emulation of memory corruption is disabled.
 AUTOSTART: Turning Warp mode on
 AUTOSTART: `bin/main.prg' recognized as program/p00 file.
 Main CPU: starting at ($FFFC).
 Main CPU: RESET.
 Sound: Opened device `dx', speed 44100Hz, fragment size fms, buffer size 200ms
-reSID: MOS6581, filter on, sampling rate 220500Hz - resampling, pass to 99225Hz
+reSID: MOS6581, filter on, sampling rate 44100Hz - resampling, pass to 19845Hz
 Drive 8: RESET.
 AUTOSTART: Injecting program data at $0801 (size $f7f7)
 AUTOSTART: Ready
 AUTOSTART: Turning Warp mode off
 AUTOSTART: Starting program.
 AUTOSTART: Done.
-reSID: MOS6581, filter on, sampling rate 44100Hz - resampling, pass to 19845Hz
 Writing configuration file `C:\Users\Nick\AppData\Roaming\vice\vice.ini'.
 
 Exiting...
-VIC-II: VSP Bug: safe channels are: 01456. Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 03567. Emulation of memory corruption is disabled.
 Sound: Closing device `dx'

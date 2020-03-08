@@ -65,7 +65,16 @@ IRQ: {
 
 		:StoreState()
 
+		ldy $d011
+
 		ldy VIC.RASTER_Y
+		cmp #208
+		bcc Okay
+
+		.break
+		nop
+
+		Okay:
 		
 		ldx ENEMIES.CurrentDrawRow
 		lda ENEMIES.IRQ_Data, x
@@ -75,6 +84,8 @@ IRQ: {
 
 		jsr ENEMIES.DrawRow
 
+		DontDraw:
+
 		jsr ENEMIES.GetNextIRQLine 
 
 
@@ -83,6 +94,10 @@ IRQ: {
 		beq BackToMain
 
 		sty VIC.RASTER_Y
+		lda VIC.SCREEN_CONTROL
+		and #%01111111		// don't use 255+
+		sta VIC.SCREEN_CONTROL
+
 
 		jmp FinishInterrupt
  
@@ -167,6 +182,9 @@ IRQ: {
 
 			jsr ENEMIES.GetNextIRQLine
 
+			cpy #255
+			beq NoSprites
+
 			lda #<SpriteIRQ
 			ldx #>SpriteIRQ
 			jsr SetNextInterrupt 
@@ -195,7 +213,7 @@ IRQ: {
 
 		:StoreState()
 
-		SetDebugBorder(2)
+	//	SetDebugBorder(2)
 
 	//	ldy #2
 	//	jsr INPUT.ReadJoystick

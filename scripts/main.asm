@@ -41,7 +41,7 @@ MachineType: .byte 0
  
  
 .label GameOverTimeOut = 120
-.label LifeLostTimeOut = 30
+.label LifeLostTimeOut = 307
 
 ScreenColour:	.byte 0
 
@@ -78,7 +78,7 @@ Entry:
 	jmp StartGame
 	jmp TitleScreen
 
-
+ 
 DetectMachine: {
 
 	w0:  lda $D012

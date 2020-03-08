@@ -1,40 +1,49 @@
 ENEMIES:{
 
-	.label NumberOfLevels = 2
+	.label NumberOfLevels = 3
 	.label DrawRows = 7
 	.label ShipCollisionMin = 178
 	.label MaxEnemyYPosition = 202
-	.label MinEnemyYPosition = 40
+	.label MinEnemyYPosition = 20
 
-	Wave_Data: 	.word Level_1, Level_2
+	Wave_Data: 	.word Level_1, Level_2, Level_3
 
-	X_Speed:	  		.byte 002, 000, 002
-	Y_Speed:	  		.byte 001, 001, 000
-	X_Direction:  		.byte 000, 000, 000
-	X_Direction_Odd:	.byte 001, 000, 000
-	FramesPerX:	  		.byte 000, 000, 000
-	FramesPerY:	  		.byte 003, 001, 003
-	Time:		  		.byte 060, 040, 060
+	X_Speed:	  		.byte 002, 002, 002, 002, 002, 002, 002, 002, 002
+	Y_Speed:	  		.byte 000, 002, 000, 002, 000, 000, 000, 000, 001
+	X_Direction:  		.byte 000, 001, 001, 000, 000, 001, 000, 000, 000
+	X_Direction_Odd:	.byte 000, 001, 001, 000, 000, 001, 000, 000, 000
+	FramesPerX:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000
+	FramesPerY:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000
+	Time:		  		.byte 060, 015, 015, 015, 015, 065, 065, 030 ,002
+
+	// X_Speed:	  		.byte 001, 000, 002
+	// Y_Speed:	  		.byte 001, 001, 000
+	// X_Direction:  		.byte 000, 000, 000
+	// X_Direction_Odd:	.byte 001, 000, 000
+	// FramesPerX:	  		.byte 000, 000, 000
+	// FramesPerY:	  		.byte 000, 001, 003
+	// Time:		  		.byte 060, 040, 060
 
 	Level_1:		.byte 0, 1, 2
-	Level_2:		.byte 1, 2
+	Level_2:		.byte 1, 2, 1, 5, 3, 4, 3, 6
+	Level_3:		.byte 7, 8
 
-	Wavelengths:	.byte 001, 002
-	StartFrames:	.byte 016, 024
-	Frames:			.byte 006, 006
-	Rows:			.byte 003, 004
-	Columns:		.byte 005, 004
-	GapX:			.byte 080, 070
-	GapY:			.byte 023, 035
-	OddOffsetX:		.byte 040, 035
-	XStart:			.byte 060, 030
-	XStart_Odd:		.byte 060, 255
-	XStart_MSB:		.byte 254, 255
-	Xstart_MSB_Odd:	.byte 001, 000
-	YStart:			.byte 050, 020
-	YStart_MSB:		.byte 000, 000
-	Colours:		.byte 010, 007
-	FramesPerFrame: .byte 003, 003
+	Wavelengths:	.byte 001, 008, 002
+	StartFrames:	.byte 016, 024, 032
+	Frames:			.byte 006, 006, 003
+	Rows:			.byte 003, 006, 003 
+	Columns:		.byte 005, 003, 005
+	GapX:			.byte 070, 090, 070
+	GapY:			.byte 023, 030, 023
+	OddOffsetX:		.byte 035, 045, 035
+	XStart:			.byte 060, 090, 060
+	XStart_Odd:		.byte 060, 090, 060
+	XStart_MSB:		.byte 254, 001, 254
+	Xstart_MSB_Odd:	.byte 254, 001, 254
+	YStart:			.byte 050, 110, 050
+	YStart_MSB:		.byte 000, 255, 000
+	Colours:		.byte 010, 007, 005
+	FramesPerFrame: .byte 003, 003, 006
 
 	CurrentLevelID:			.byte 0
 	CurrentWaveID:			.byte 0
@@ -53,7 +62,7 @@ ENEMIES:{
 	CurrentRows:			.byte 7
 	CurrentColumns:			.byte 5
 	CurrentDrawRow:			.byte 0
-	CurrentWaves:			.byte 0, 0, 0, 0, 0, 0, 0, 0
+	CurrentWaves:			.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	CurrentWaveLength:		.byte 0
 	CurrentStartFrame:		.byte 0
 
@@ -114,6 +123,13 @@ ENEMIES:{
 
 		lda 0
 		sta BULLET.EnemyToFire
+		sta CurrentMovementTime
+		sta CurrentMovementID
+		sta CurrentXSpeed
+		sta CurrentYSpeed
+		sta CurrentFrame
+
+		jsr SetupWave
 
 		ldx #0
 
@@ -309,6 +325,9 @@ ENEMIES:{
 		// y = data row being drawn
 		// x = physical row being drawn
 
+		lda PosY_MSB, y
+		bne DontDraw
+
 		lda PosY_LSB, y
 
 		sta VIC.SPRITE_0_Y + 2
@@ -318,6 +337,8 @@ ENEMIES:{
 		sta VIC.SPRITE_0_Y + 10
 		sta VIC.SPRITE_0_Y + 12
 		sta VIC.SPRITE_0_Y + 14
+
+		DontDraw:
 
 		inx
 		cpx #DrawRows
@@ -395,16 +416,18 @@ ENEMIES:{
 			tax
 			lda PosY_MSB,x
 
-			cmp #01
-			bcs NextRow
+			bne NextRow
 
 			lda PosY_LSB, x
 			sec
 			sbc #12
 			tay
 
-			cmp #36
+			cmp #38
 			bcc NextRow
+
+			cmp #MaxEnemyYPosition
+			bcs NextRow
 
 			
 			Okay:
@@ -656,7 +679,7 @@ ENEMIES:{
 
 			 		lda PosY_LSB, y
 			 		clc
-			 		adc #16
+			 		adc #20
 					sec
 			 		//sbc #8
 			 		sbc BULLET.PosY
@@ -797,14 +820,19 @@ ENEMIES:{
 		 	cmp #2
 		 	beq EndLoop
 
-		 	cmp #255
-		 	beq EndLoop
-
 		 	lda PosY_LSB, x
 		 	clc
 		 	adc CurrentYSpeed
 		 	sta PosY_LSB, x
 
+		 	lda PosY_MSB, x
+		 	adc #00
+		 	sta PosY_MSB, x
+
+		 	bne EndLoop
+
+		 	lda PosY_LSB, x
+		 
 		 	//ldy IRQ_Data, x
 		 	//sec
 		 	//sbc YOffsets, y
@@ -1012,7 +1040,7 @@ ENEMIES:{
 
 		jsr RANDOM.Get
 
-		and #%01111111
+		and #%00111111
 
 		cmp #18
 		bcs Finish
