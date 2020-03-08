@@ -1,20 +1,21 @@
 ENEMIES:{
 
-	.label NumberOfLevels = 3
+	.label NumberOfLevels = 5
 	.label DrawRows = 7
 	.label ShipCollisionMin = 178
 	.label MaxEnemyYPosition = 202
 	.label MinEnemyYPosition = 20
 
-	Wave_Data: 	.word Level_1, Level_2, Level_3
+	Wave_Data: 	.word Level_1, Level_2, Level_3, Level_4, Level_5
 
-	X_Speed:	  		.byte 002, 002, 002, 002, 002, 002, 002, 002, 002
-	Y_Speed:	  		.byte 000, 002, 000, 002, 000, 000, 000, 000, 001
-	X_Direction:  		.byte 000, 001, 001, 000, 000, 001, 000, 000, 000
-	X_Direction_Odd:	.byte 000, 001, 001, 000, 000, 001, 000, 000, 000
-	FramesPerX:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000
-	FramesPerY:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000
-	Time:		  		.byte 060, 015, 015, 015, 015, 065, 065, 030 ,002
+	X_Speed:	  		.byte 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002
+	Y_Speed:	  		.byte 000, 002, 000, 002, 000, 000, 000, 000, 001, 000, 002, 000, 002, 002, 000, 002, 000, 002, 002, 001, 001
+	Y_Direction:		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 001
+	X_Direction:  		.byte 000, 001, 001, 000, 000, 001, 000, 000, 000, 000, 000, 000, 000, 001, 001, 001, 001, 001, 000, 000, 000 
+	X_Direction_Odd:	.byte 000, 001, 001, 000, 000, 001, 000, 000, 000, 001, 001, 001, 001, 000, 000, 000, 000, 000, 001, 000, 000
+	FramesPerX:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000
+	FramesPerY:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 006, 006
+	Time:		  		.byte 060, 015, 015, 015, 015, 065, 065, 030, 002, 075, 010, 010, 005, 005, 075, 010, 010, 005, 005, 250, 250
 
 	// X_Speed:	  		.byte 001, 000, 002
 	// Y_Speed:	  		.byte 001, 001, 000
@@ -27,31 +28,34 @@ ENEMIES:{
 	Level_1:		.byte 0, 1, 2
 	Level_2:		.byte 1, 2, 1, 5, 3, 4, 3, 6
 	Level_3:		.byte 7, 8
+	Level_4:		.byte 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+	Level_5:		.byte 19, 19, 20, 20
 
-	Wavelengths:	.byte 001, 008, 002
-	StartFrames:	.byte 016, 024, 032
-	Frames:			.byte 006, 006, 003
-	Rows:			.byte 003, 006, 003 
-	Columns:		.byte 005, 003, 005
-	GapX:			.byte 070, 090, 070
-	GapY:			.byte 023, 030, 023
-	OddOffsetX:		.byte 035, 045, 035
-	XStart:			.byte 060, 090, 060
-	XStart_Odd:		.byte 060, 090, 060
-	XStart_MSB:		.byte 254, 001, 254
-	Xstart_MSB_Odd:	.byte 254, 001, 254
-	YStart:			.byte 050, 110, 050
-	YStart_MSB:		.byte 000, 255, 000
-	Colours:		.byte 010, 007, 005
-	FramesPerFrame: .byte 003, 003, 006
+	Wavelengths:	.byte 001, 008, 002, 010, 004
+	StartFrames:	.byte 016, 024, 032, 035, 048
+	Frames:			.byte 006, 006, 003, 003, 006
+	Rows:			.byte 003, 006, 003, 006, 003
+	Columns:		.byte 005, 003, 005, 003, 005
+	GapX:			.byte 070, 090, 070, 090, 070
+	GapY:			.byte 023, 030, 023, 030, 023
+	OddOffsetX:		.byte 035, 045, 035, 045, 035
+	XStart:			.byte 060, 090, 060, 160, 060
+	XStart_MSB:		.byte 254, 001, 254, 000, 254
+	XStart_Odd:		.byte 060, 090, 060, 255, 060
+	Xstart_MSB_Odd:	.byte 254, 001, 254, 000, 254
+	YStart:			.byte 050, 110, 050, 140, 050
+	YStart_MSB:		.byte 000, 255, 000, 255, 000
+	Colours:		.byte 010, 007, 005, 010, 005
+	FramesPerFrame: .byte 003, 003, 006, 006, 003
 
-	CurrentLevelID:			.byte 0
+	CurrentLevelID:			.byte 4
 	CurrentWaveID:			.byte 0
 	CurrentMovementID:		.byte 0
 	CurrentMovementTime:	.byte 0, 0
 
 	CurrentXSpeed:			.byte 0
 	CurrentXDirection:		.byte 0, 0
+	CurrentYDirection:		.byte 0
 	CurrentYSpeed:			.byte 0
 	CurrentXFrames:			.byte 0, 0
 	CurrentYFrames:			.byte 0, 0
@@ -62,7 +66,7 @@ ENEMIES:{
 	CurrentRows:			.byte 7
 	CurrentColumns:			.byte 5
 	CurrentDrawRow:			.byte 0
-	CurrentWaves:			.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	CurrentWaves:			.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	CurrentWaveLength:		.byte 0
 	CurrentStartFrame:		.byte 0
 
@@ -117,6 +121,21 @@ ENEMIES:{
 	
 
 	ResetLevel: {
+
+
+		ldx #0	// reset sprite positions so that unused sprites won't be seen
+		stx VIC.SPRITE_0_X + 2
+		stx VIC.SPRITE_0_X + 4			
+		stx VIC.SPRITE_0_X + 6
+		stx VIC.SPRITE_0_X + 8
+		stx VIC.SPRITE_0_X + 10
+		stx VIC.SPRITE_0_X + 12
+		stx VIC.SPRITE_0_X + 14
+
+		lda VIC.SPRITE_MSB
+		and #%00000001		// reset MSB positions
+		sta VIC.SPRITE_MSB
+
 
 		lda #99
 		sta CurrentDrawRow
@@ -820,6 +839,23 @@ ENEMIES:{
 		 	cmp #2
 		 	beq EndLoop
 
+		 	lda CurrentYDirection
+		 	beq MoveDown	
+
+		 	MoveUp:
+
+		 	lda PosY_LSB, x
+		 	sec
+		 	sbc CurrentYSpeed
+
+		 	lda PosY_MSB, x
+		 	sbc #00
+		 	sta PosY_MSB, x
+
+		 	jmp EndLoop
+
+		 	MoveDown:
+
 		 	lda PosY_LSB, x
 		 	clc
 		 	adc CurrentYSpeed
@@ -1069,8 +1105,11 @@ ENEMIES:{
 			FoundRow:
 
 			dey
-			lda PosY_LSB, y
 
+			lda PosY_MSB, y
+			bne Finish
+
+			lda PosY_LSB, y
 			cmp #140
 			bcs Finish
 
@@ -1114,6 +1153,9 @@ ENEMIES:{
 
 		lda X_Direction_Odd, x
 		sta CurrentXDirection + 1
+
+		lda Y_Direction, x
+		sta CurrentYDirection
 
 		lda FramesPerX, x
 		sta CurrentXFrames + 1
