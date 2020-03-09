@@ -9,9 +9,9 @@ Memory Map
 ----------
 Default-segment:
   *$0002-$002f Temp vars zero page
-  $0801-$080c Basic
+  $0801-$080d Basic
   $080e-$080d Basic End
-  $1000-$282a Modules
+  $1000-$287a Modules
   $3000-$335e sid
   $8000-$80ef Game Map
   $8100-$8187 Game Tiles
