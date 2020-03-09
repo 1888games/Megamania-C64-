@@ -1,21 +1,25 @@
 ENEMIES:{
 
-	.label NumberOfLevels = 5
+	.label NumberOfLevels = 7
 	.label DrawRows = 7
 	.label ShipCollisionMin = 178
 	.label MaxEnemyYPosition = 202
 	.label MinEnemyYPosition = 20
 
-	Wave_Data: 	.word Level_1, Level_2, Level_3, Level_4, Level_5
+	Wave_Data: 	.word Level_1, Level_2, Level_3, Level_4, Level_5, Level_6, Level_7, Level_8
 
-	X_Speed:	  		.byte 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002
-	Y_Speed:	  		.byte 000, 002, 000, 002, 000, 000, 000, 000, 001, 000, 002, 000, 002, 002, 000, 002, 000, 002, 002, 001, 001
-	Y_Direction:		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 001
-	X_Direction:  		.byte 000, 001, 001, 000, 000, 001, 000, 000, 000, 000, 000, 000, 000, 001, 001, 001, 001, 001, 000, 000, 000 
-	X_Direction_Odd:	.byte 000, 001, 001, 000, 000, 001, 000, 000, 000, 001, 001, 001, 001, 000, 000, 000, 000, 000, 001, 000, 000
-	FramesPerX:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000
-	FramesPerY:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 006, 006
-	Time:		  		.byte 060, 015, 015, 015, 015, 065, 065, 030, 002, 075, 010, 010, 005, 005, 075, 010, 010, 005, 005, 250, 250
+	X_Speed:	  		.byte 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 002, 000
+	Y_Speed:	  		.byte 000, 002, 000, 002, 000, 000, 000, 000, 001, 000, 002, 000, 002, 002, 000, 002, 000, 002, 002, 001, 001, 001, 001, 002
+	Y_Direction:		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 001, 000, 001, 000
+	X_Direction:  		.byte 000, 001, 001, 000, 000, 001, 000, 000, 000, 000, 000, 000, 000, 001, 001, 001, 001, 001, 000, 000, 000, 000, 000, 000
+	X_Direction_Odd:	.byte 000, 001, 001, 000, 000, 001, 000, 000, 000, 001, 001, 001, 001, 000, 000, 000, 000, 000, 001, 000, 000, 000, 000, 000
+	FramesPerX:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000
+	FramesPerY:	  		.byte 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 000, 006, 006, 000, 000, 000
+	Time:		  		.byte 060, 015, 015, 015, 015, 065, 065, 030, 002, 075, 010, 010, 005, 005, 075, 010, 010, 005, 005, 230, 230, 050, 050, 255
+
+	DiceLevel_LSB:	.byte 080, 180, 255, 040, 090, 160, 230, 030, 100, 200, 000, 050, 120, 160, 205, 020, 095, 135, 175, 210, 030, 000, 130, 185, 010, 045, 120, 155, 230, 005, 000, 065, 090, 175, 220
+	DiceLevel_MSB:	.byte 000, 000, 000, 000, 000, 000, 000, 001, 000, 000, 000, 000, 000, 000, 000, 001, 000, 000, 000, 000, 001, 000, 000, 000, 001, 001, 000, 000, 000, 001, 000, 000, 000, 000, 000
+	
 
 	// X_Speed:	  		.byte 001, 000, 002
 	// Y_Speed:	  		.byte 001, 001, 000
@@ -25,30 +29,34 @@ ENEMIES:{
 	// FramesPerY:	  		.byte 000, 001, 003
 	// Time:		  		.byte 060, 040, 060
 
-	Level_1:		.byte 0, 1, 2
+	Level_1:		.byte 0
 	Level_2:		.byte 1, 2, 1, 5, 3, 4, 3, 6
 	Level_3:		.byte 7, 8
 	Level_4:		.byte 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
 	Level_5:		.byte 19, 19, 20, 20
+	Level_6:		.byte 0
+	Level_7:		.byte 21, 22
+	Level_8:		.byte 23
+					//	  1    2    3    4    5    6    7    8 
+	Wavelengths:	.byte 001, 008, 002, 010, 004, 001, 002, 001
+	StartFrames:	.byte 016, 024, 032, 035, 048, 016, 056, 064
+	Frames:			.byte 006, 006, 003, 003, 006, 006, 006, 016
+	Rows:			.byte 003, 006, 003, 006, 003, 003, 003, 006
+	Columns:		.byte 005, 003, 005, 003, 005, 005, 005, 003
+	GapX:			.byte 070, 090, 070, 090, 070, 070, 070, 090
+	GapY:			.byte 023, 030, 023, 030, 023, 023, 023, 030
+	OddOffsetX:		.byte 035, 045, 035, 045, 035, 035, 035, 055
+	XStart:			.byte 060, 090, 060, 160, 060, 060, 060, 040
+	XStart_MSB:		.byte 254, 001, 254, 000, 254, 254, 254, 000
+	XStart_Odd:		.byte 060, 090, 060, 255, 060, 060, 060, 040
+	Xstart_MSB_Odd:	.byte 254, 001, 254, 000, 254, 254, 254, 000
+	YStart:			.byte 050, 110, 050, 140, 050, 050, 050, 110
+	YStart_MSB:		.byte 000, 255, 000, 255, 000, 000, 000, 255
+	Colours:		.byte 010, 007, 005, 010, 005, 007, 008, 007
+	FramesPerFrame: .byte 003, 003, 006, 006, 003, 003, 003, 003
+	IsDiceLevel:	.byte 000, 000, 000, 000, 000, 000, 000, 001
 
-	Wavelengths:	.byte 001, 008, 002, 010, 004
-	StartFrames:	.byte 016, 024, 032, 035, 048
-	Frames:			.byte 006, 006, 003, 003, 006
-	Rows:			.byte 003, 006, 003, 006, 003
-	Columns:		.byte 005, 003, 005, 003, 005
-	GapX:			.byte 070, 090, 070, 090, 070
-	GapY:			.byte 023, 030, 023, 030, 023
-	OddOffsetX:		.byte 035, 045, 035, 045, 035
-	XStart:			.byte 060, 090, 060, 160, 060
-	XStart_MSB:		.byte 254, 001, 254, 000, 254
-	XStart_Odd:		.byte 060, 090, 060, 255, 060
-	Xstart_MSB_Odd:	.byte 254, 001, 254, 000, 254
-	YStart:			.byte 050, 110, 050, 140, 050
-	YStart_MSB:		.byte 000, 255, 000, 255, 000
-	Colours:		.byte 010, 007, 005, 010, 005
-	FramesPerFrame: .byte 003, 003, 006, 006, 003
-
-	CurrentLevelID:			.byte 4
+	CurrentLevelID:			.byte 7
 	CurrentWaveID:			.byte 0
 	CurrentMovementID:		.byte 0
 	CurrentMovementTime:	.byte 0, 0
@@ -69,6 +77,7 @@ ENEMIES:{
 	CurrentWaves:			.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	CurrentWaveLength:		.byte 0
 	CurrentStartFrame:		.byte 0
+	CurrentIsDiceLevel: 	.byte 0 
 
 	CurrentGapX:			.byte 0
 	CurrentGapY:			.byte 0
@@ -484,33 +493,6 @@ ENEMIES:{
 	}
 
 
-
-	UpdateXPositionOld:{
-
-
-		ldx #0
-
-	 	LoopX:
-
-		lda VIC.SPRITE_0_X + 2, x
-		clc
-		adc CurrentXSpeed
-		sta VIC.SPRITE_0_X + 2, x
-
-		inx
-		cpx #14
-		beq Finish
-		jmp LoopX
-
-		Finish:
-
-
-
-
-		rts
-	
-	}
-
 	UpdateXPosition: {
 
 
@@ -816,6 +798,73 @@ ENEMIES:{
 		rts
 	}
 
+
+	CheckDiceLevel: {
+
+		pha
+
+		lda CurrentIsDiceLevel
+		beq NoDice
+
+		pla
+
+		cmp #40
+		beq RepositionX
+
+		cmp #39
+		beq RepositionX
+
+		jmp Finish
+
+
+		RepositionX:
+
+			lda RowFirstEnemyIndex, x
+			tax
+
+			jsr RANDOM.Get
+			and #%00011111
+			sta New_X_index
+
+			ldy #0
+
+			Loop:
+
+				sty Column
+
+				ldy New_X_index
+
+				lda PosX_MSB, x
+				cmp #3
+				beq EndLoop
+
+				lda DiceLevel_LSB, y
+				sta PosX_LSB, x
+
+				lda DiceLevel_MSB, y
+				sta PosX_MSB, x
+
+				EndLoop:
+
+				ldy Column
+				iny
+				cpy CurrentColumns
+				beq Finish
+				inx
+				inc New_X_index
+				jmp Loop
+
+
+
+		NoDice:
+
+		pla
+
+		Finish:
+
+		rts
+	}
+
 	UpdateYPosition: {
 
 		lda CurrentYFrames
@@ -847,6 +896,7 @@ ENEMIES:{
 		 	lda PosY_LSB, x
 		 	sec
 		 	sbc CurrentYSpeed
+		 	sta PosY_LSB, x
 
 		 	lda PosY_MSB, x
 		 	sbc #00
@@ -875,7 +925,10 @@ ENEMIES:{
 		 	cmp #MaxEnemyYPosition
 		 	bcs WrapY
 
+			jsr CheckDiceLevel
 		 	jsr CheckShipCollision
+		 
+
 		 	jmp EndLoop
 
 		 	WrapY:
@@ -1061,6 +1114,9 @@ ENEMIES:{
 		lda SHIP.Paused
 		bne Finish
 
+		lda CurrentIsDiceLevel
+		bne Finish
+
 		lda BULLET.EnemyToFire
 		bne Finish
 
@@ -1222,6 +1278,9 @@ ENEMIES:{
 
 			lda Columns, y
 			sta CurrentColumns
+
+			lda IsDiceLevel, y
+			sta CurrentIsDiceLevel
 
 			lda GapX, y
 			sta CurrentGapX

@@ -30,6 +30,7 @@ RESET: {
 		sta ENEMIES.CurrentWaveLength
 		sta ENEMIES.CurrentStartFrame
 		sta ENEMIES.CurrentGapX
+		sta ENEMIES.IsDiceLevel
 		sta ENEMIES.CurrentGapY
 		sta ENEMIES.CurrentOddOffsetX
 		sta ENEMIES.CurrentXStart_LSB
