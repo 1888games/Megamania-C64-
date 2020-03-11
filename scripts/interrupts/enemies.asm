@@ -51,8 +51,7 @@ ENEMIES:{
 	XWrap_Right:	.byte 150, 170, 150, 150, 150, 150, 150, 150, 150
 
 
-	CurrentLevelID:			.byte 1
-	CurrentWaveID:			.byte 0
+	CurrentLevelID:			.byte 0
 	CurrentMovementID:		.byte 0
 	CurrentMovementTime:	.byte 0, 0
 
@@ -146,7 +145,7 @@ ENEMIES:{
 		lda #99
 		sta CurrentDrawRow
 
-		lda 0
+		lda #0
 		sta BULLET.EnemyToFire
 		sta CurrentMovementTime
 		sta CurrentMovementID
@@ -1061,6 +1060,17 @@ ENEMIES:{
 		lda #1
 		sta ENERGY.LevelComplete
 
+		sfx(4)
+
+		ldx #0
+		jsr BULLET.DestroyBullet
+
+		ldx #1
+		jsr BULLET.DestroyBullet
+
+		ldx #2
+		jsr BULLET.DestroyBullet
+
 		lda #0
 		sta LevelActive
 
@@ -1184,6 +1194,12 @@ ENEMIES:{
 		lda PosX_MSB, x
 		adc #0
 		sta BULLET.EnemyFireX_MSB
+
+		cmp #2
+		bcc Finish
+
+		lda #0
+		sta BULLET.EnemyToFire
 
 		Finish:
 
@@ -1324,7 +1340,6 @@ ENEMIES:{
 
 
 			lda #0
-			sta CurrentWaveID
 			sta CurrentMovementID
 			sta CurrentMovementTime
 			sta CurrentXSpeed

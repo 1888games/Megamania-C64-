@@ -1,7 +1,7 @@
 ENERGY: {
 	
 
-	Timer:	.byte 5, 25, 0
+	Timer:	.byte 5, 28, 0
 	CurrentCharacter: .byte 0
 	CurrentFillValue:	.byte 0
 
@@ -31,6 +31,7 @@ ENERGY: {
 		lda Timer + 2
 		sta Timer
 
+		sfx(3)
 
 
 		rts
@@ -169,6 +170,19 @@ ENERGY: {
 		IncreaseBar:
 
 			lda Timer + 2
+			beq Switch
+
+			lda #0
+			sta Timer + 2
+			jmp Time
+
+			Switch:
+
+			lda #1
+			sta Timer + 2
+
+			Time:
+
 			sta Timer
 
 			inc CurrentFillValue

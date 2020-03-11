@@ -35,6 +35,8 @@ BULLET:{
 
 	CharacterID:	.byte 0, 0, 0
 
+	StopProgram: .byte 0
+
 	CurrentCollisionRow:	.byte 0
 
 	EnemiesChecked:	.byte 0
@@ -86,9 +88,9 @@ BULLET:{
 		OkayToFire:
 
 			lda EnemyFireX_LSB
-			sta NewBulletX_LSB
 			clc
 			adc #8
+			sta NewBulletX_LSB
 
 			lda EnemyFireX_MSB
 			adc #0
@@ -221,6 +223,22 @@ BULLET:{
 				lsr
 				lsr
 
+				// cmp #25
+				// bcs Error
+
+				// jmp NoError
+
+				// Error:
+
+				// ldy BulletPositionAdjY
+
+
+
+				// .break
+				// nop
+
+				// NoError:
+
 				sta PrevRow, x
 				tay
 
@@ -269,6 +287,14 @@ BULLET:{
 
 			CalculateCharacter:
 
+				lda StopProgram
+				beq DontStop
+
+				.break
+				nop
+
+				DontStop:
+
 				lda ColX, x
 				sec
 				sbc BulletPositionAdjX
@@ -304,6 +330,8 @@ BULLET:{
 				adc #StartCharacter
 				sta CharacterID
 
+
+
 			CalculateYOffset:
 
 				ldx CurrentID
@@ -311,8 +339,8 @@ BULLET:{
 				lda PrevRow, x
 				tay
 
-				lda BulletPositionAdjY
-				tax
+				//lda BulletPositionAdjY
+				//tax
 
 				lda RowY, y
 				sec
@@ -324,6 +352,34 @@ BULLET:{
 				adc CharacterID
 				sta CharacterID
 
+				// cmp #59
+				// bcc Oops
+
+				// cmp #90
+				// bcs Oops
+
+				// jmp DrawBullet
+
+				// Oops:
+
+
+
+				// 	pha
+
+				// 	lda #1
+				// 	sta StopProgram
+
+				// 	lda RowY, y
+				// 	tay
+				// 	lda BulletPositionAdjY
+				// 	tax
+
+				// 	pla
+
+
+
+				// 	.break
+				// 	nop
 
 			DrawBullet:	
 

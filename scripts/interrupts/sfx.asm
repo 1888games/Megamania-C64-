@@ -77,29 +77,29 @@ play_with_music:
 .label SFX_FIRE = 0
 .label SFX_DEAD = 1
 .label SFX_HIT= 2
-.label SFX_CASH	= 3
-.label SFX_JUMP	= 4
+.label SFX_UP	= 3
+.label SFX_DOWN	= 4
 .label SFX_LIFT	= 5
 .label SFX_PLANE = 6
 .label SFX_DOOR = 7
 .label SFX_BONUS = 8
 
 sfx_fire:
-.import binary "../../Assets/sfx/jump.snd"
+.import binary "../../Assets/sfx/Player_fire.bin"
 
 sfx_dead:
-.import binary "../../Assets/sfx/die"
+.import binary "../../Assets/sfx/Player_die.bin"
 
 
 sfx_hit:
-.import binary "../../Assets/sfx/sfx_crunch"
+.import binary "../../Assets/sfx/Alien_die.bin"
 
 
-sfx_cash:
-.import binary "../../Assets/sfx/diceroll"
+sfx_up:
+.import binary "../../Assets/sfx/Energy_up.bin"
 
-sfx_jump:
-.import binary "../../Assets/sfx/pickup"
+sfx_down:
+.import binary "../../Assets/sfx/Energy_down.bin"
 
 sfx_lift:
 .import binary "../../Assets/sfx/boing.snd"
@@ -114,10 +114,10 @@ sfx_bonus:
 .import binary "../../Assets/sfx/sfx_thud"
 
 wavetable_l:
-.byte <sfx_fire, <sfx_dead, <sfx_hit, <sfx_cash, <sfx_jump, <sfx_lift, <sfx_plane, <sfx_door, <sfx_bonus
+.byte <sfx_fire, <sfx_dead, <sfx_hit, <sfx_up, <sfx_down, <sfx_lift, <sfx_plane, <sfx_door, <sfx_bonus
 
 wavetable_h:
-.byte >sfx_fire, >sfx_dead, >sfx_hit, >sfx_cash, >sfx_jump, >sfx_lift, >sfx_plane, >sfx_door, >sfx_bonus
+.byte >sfx_fire, >sfx_dead, >sfx_hit, >sfx_up, >sfx_down, >sfx_lift, >sfx_plane, >sfx_door, >sfx_bonus
 
 
 

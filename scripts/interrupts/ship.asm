@@ -53,6 +53,7 @@ SHIP:{
 
 
 
+
 		jsr SetPosition
 
 		rts
@@ -151,9 +152,15 @@ SHIP:{
 
 			lda #0
 			sta Dead
+			sta VIC.SPRITE_0_X
+
+			lda VIC.SPRITE_MSB
+			and #%11111110
+			sta VIC.SPRITE_MSB
 
 			lda #1
 			sta Paused
+
 
 			//sta VIC.SPRITE_COLOR_0 
 
@@ -162,6 +169,7 @@ SHIP:{
 			jsr ENERGY.Reset
 			jsr BULLET.Reset
 			jsr ENEMIES.ResetLevel
+
 
 
 			jmp Finish
