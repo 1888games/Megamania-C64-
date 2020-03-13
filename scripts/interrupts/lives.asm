@@ -17,6 +17,7 @@ LIVES:{
 
 	AddLife:	.byte 0
 	CurrentColour: 	.byte 0
+	Dead:		.byte 0, 0
 
 
 	Reset:{
@@ -24,6 +25,10 @@ LIVES:{
 		lda #StartLives
 		sta Value
 		sta Value + 1
+
+		lda #0
+		sta Dead
+		sta Dead + 1
 
 		jsr Draw
 //
@@ -38,6 +43,15 @@ LIVES:{
 
 		lda Value, x
 		bne StillAlive
+
+		lda #1
+		sta Dead, x
+		
+		lda Dead
+		clc
+		adc Dead + 1
+		cmp #2
+		bcc Finish
 
 		jsr MAIN.GameOver
 

@@ -39,9 +39,9 @@ RESET: {
 		sta ENEMIES.CurrentYStart_MSB
 		sta ENEMIES.CurrentFramesPerFrame
 		sta ENEMIES.FrameCounter
-		sta ENEMIES.EnemiesSpawned
 		sta ENEMIES.EnemiesReady
-		sta ENEMIES.LevelActive
+		//sta ENEMIES.LevelActive
+		//sta ENEMIES.LevelActive + 1
 
 		ldx #0
 

@@ -24,10 +24,24 @@ SCORE:{
 	Reset:{
 
 		lda ScoreInitialised
-		bne Finish
+		beq InitialiseScore
+
+		jmp Finish
+
+		InitialiseScore:
 
 		lda #1
 		sta ScoreInitialised
+
+		lda #14
+
+		.for(var i=21; i<24; i++) {
+			.for(var j=0; j<40; j++) {
+				sta VIC.COLOR_RAM + (i * 40) + j
+			}
+			
+		}
+
 
 		lda #ZERO
 		sta Value
@@ -50,6 +64,8 @@ SCORE:{
 		rts
 
 	}
+
+
 
 
 	BackupScore:		{
@@ -96,6 +112,15 @@ SCORE:{
 	}
 
 	DisplayBest: {
+
+		lda #10
+
+		.for(var i=22; i<24; i++) {
+			.for(var j=0; j<40; j++) {
+				sta VIC.COLOR_RAM + (i * 40) + j
+			}
+			
+		}
 
 		lda #0
 		sta ScoreToAdd

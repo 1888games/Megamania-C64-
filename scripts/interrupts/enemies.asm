@@ -113,8 +113,9 @@ ENEMIES:{
 	CurrentScoreAmount: 	.byte 20
 
 	EnemiesSpawned:			.byte 0, 0
+	BackupSpawned:			.byte 0, 0
 	EnemiesReady:			.byte 0
-	LevelActive:			.byte 0
+	LevelActive:			.byte 0, 0
 
 
 	// Positional Data
@@ -132,6 +133,7 @@ ENEMIES:{
 
 	Player1PosX_MSB:	.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	Player2PosX_MSB:	.byte 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	OverwriteEnemyMSB:	.byte 0, 0
 
 
 	IRQ_Data:			.byte 0, 1, 2, 3, 4, 5, 6
@@ -143,7 +145,6 @@ ENEMIES:{
 	// Lookup
 
 	Times2:			.byte 0, 2, 4, 6, 8, 10, 12
-
 	BulletSpeed:		.byte 2
 
 
@@ -152,7 +153,12 @@ ENEMIES:{
 		
 		lda #0
 		sta LevelActive
+		sta LevelActive + 1
 		sta EnemiesReady
+
+	//	lda #7
+		sta CurrentLevelID
+		sta CurrentLevelID + 1
 
 		lda #2
 		sta BulletSpeed
@@ -248,8 +254,14 @@ ENEMIES:{
 
 	PlayerReady: {
 
-		lda LevelActive
+		ldx SHIP.CurrentPlayer
+
+		lda LevelActive, x
 		beq LoadNewLevel
+
+		jsr NewLevel
+		jsr SpawnWave
+		jsr RestoreMSB
 
 		lda #1
 		sta EnemiesReady
@@ -258,17 +270,106 @@ ENEMIES:{
 
 		LoadNewLevel:
 
+			ldx SHIP.CurrentPlayer
+			lda  #0
+			sta LevelActive, x
+
+
 			jsr NewLevel
 			jsr SpawnWave
-
-			lda #1
-			sta LevelActive
+			
+			ldx SHIP.CurrentPlayer
+			lda #1		
+			sta LevelActive, x
 
 
 		Finish:
 
 		rts
 	}
+
+
+	BackupMSB: {
+
+
+		ldx SHIP.CurrentPlayer
+		lda EnemiesSpawned, x
+		sta BackupSpawned, x
+
+		ldx #0
+		ldy #0
+
+		lda SHIP.CurrentPlayer
+		beq Ready
+
+		txa
+		clc
+		adc #18
+
+		Ready:
+
+		tax
+
+		Loop:
+
+		
+			lda PosX_MSB, y
+			sta Player1PosX_MSB, x
+			inx
+			iny
+			cpy #18
+			beq Finish
+			jmp Loop
+
+		Finish:
+
+			rts
+
+	}
+
+
+	RestoreMSB: {
+	
+		ldx SHIP.CurrentPlayer
+		lda BackupSpawned, x
+		sta EnemiesSpawned, x
+
+		ldx #0
+		ldy #0
+
+		lda SHIP.CurrentPlayer
+		beq Ready
+
+		txa
+		clc
+		adc #18
+		
+
+		Ready:
+
+		tax	
+
+		Loop:
+
+			lda Player1PosX_MSB, x
+			cmp #2
+			bcc EndLoop
+			sta PosX_MSB, y
+
+			EndLoop:
+
+				inx
+				iny
+				cpy #18
+				beq Finish
+				jmp Loop
+
+		Finish:
+
+			rts
+
+	}
+
 
 
 	PlayerDied: {
@@ -738,7 +839,15 @@ ENEMIES:{
 			 		lda #3
 			 		sta PosX_MSB, x
 			 		sta BULLET.Destroy
-			 		dec EnemiesSpawned
+
+			 		txa
+			 		pha
+			 		ldx SHIP.CurrentPlayer
+
+			 		dec EnemiesSpawned, x
+
+			 		pla
+			 		tax
 
 			 		lda CurrentScoreAmount
 
@@ -819,7 +928,10 @@ ENEMIES:{
 			cmp #08
 			bcs EndLoop
 
+			
 			jsr SHIP.Kill
+
+
 			jmp Finish
 
 			EndLoop:
@@ -1091,8 +1203,8 @@ ENEMIES:{
 
 	CheckWhetherLevelComplete: {
 
-
-		lda EnemiesSpawned
+		ldx SHIP.CurrentPlayer
+		lda EnemiesSpawned, x
 		bne Finish
 
 		lda #1
@@ -1132,19 +1244,26 @@ ENEMIES:{
 		ldx #2
 		jsr BULLET.DestroyBullet
 
-		lda #0
-		sta LevelActive
+		
 
-		ldx CurrentLevelID
+		ldx SHIP.CurrentPlayer
+	
+		lda #0
+		sta LevelActive, x
+
+		lda CurrentLevelID, x
+		tax
 		inx
 		cpx #NumberOfLevels
 		bcc StoreLevel
 
-		ldx #ResetLevelID
+		lda #ResetLevelID
 
 		StoreLevel:
 
-		stx CurrentLevelID
+		txa
+		ldx SHIP.CurrentPlayer
+		sta CurrentLevelID, x
 
 
 		Finish:
@@ -1212,7 +1331,9 @@ ENEMIES:{
 		cmp LastEnemyToFire
 		bne NotSameEnemy
 
-		lda EnemiesSpawned
+		ldy SHIP.CurrentPlayer
+
+		lda EnemiesSpawned, y
 		cmp #2
 		bcs Finish
 
@@ -1321,7 +1442,9 @@ ENEMIES:{
 
 	SpawnWave: {
 
-		lda CurrentLevelID
+		ldx SHIP.CurrentPlayer
+
+		lda CurrentLevelID, x
 		asl
 		tax
 		lda Wave_Data, x
@@ -1330,8 +1453,10 @@ ENEMIES:{
 		lda Wave_Data, x
 		sta WaveDataAddress + 2
 
+		ldx SHIP.CurrentPlayer
+		lda CurrentLevelID, x
+		tay
 		ldx #0
-		ldy CurrentLevelID
 
 		lda Wavelengths, y
 		sta CurrentWaveLength
@@ -1429,7 +1554,8 @@ ENEMIES:{
 			sta CurrentFrame
 			sta CurrentDrawRow
 			
-			sta EnemiesSpawned
+			ldx SHIP.CurrentPlayer
+			sta EnemiesSpawned, x
 
 			// Get Y Positions
 
@@ -1510,9 +1636,11 @@ ENEMIES:{
 
 	SpawnEnemies:	{
 
+		ldx SHIP.CurrentPlayer
 
-		ldy #0		// current row
-		sty EnemiesSpawned
+		ldy #0
+		lda #0		// current row
+		sta EnemiesSpawned, x
 		sty RowIsOdd
 
 		lda CurrentYStart_MSB
@@ -1575,7 +1703,9 @@ ENEMIES:{
 				sta PosY_MSB, y
 				sta OrigPosY_MSB, y
 
-				lda EnemiesSpawned
+				ldx SHIP.CurrentPlayer
+
+				lda EnemiesSpawned, x
 				sta RowFirstEnemyIndex, y	
 	 
 				ldx #0
@@ -1584,9 +1714,12 @@ ENEMIES:{
 
 				stx Column
 
-				ldx EnemiesSpawned
-				inc EnemiesSpawned
+				ldx SHIP.CurrentPlayer
 
+				lda EnemiesSpawned, x
+				inc EnemiesSpawned, x
+				tax
+			
 				lda RowIsOdd
 				sta OddorEven, x
 

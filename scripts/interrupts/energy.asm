@@ -45,6 +45,16 @@ ENERGY: {
 	}
 
 
+	NewGame: {
+
+		lda #0
+		sta Died
+		sta Waiting
+
+		rts
+
+	}
+
 
 	SetEnergyZero: {
 
@@ -104,6 +114,9 @@ ENERGY: {
 		lda MAIN.Players
 		cmp #1
 		beq Finish
+
+		ldx SHIP.CurrentPlayer
+		lda LIVES.Value
 
 		jsr SCORE.BackupScore
 

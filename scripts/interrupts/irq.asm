@@ -247,7 +247,7 @@ IRQ: {
 
 		Paused:
 
-
+		 jsr LOGO.Update
 
 		 lda MAIN.GameIsOver
 		 beq Finish

@@ -42,7 +42,6 @@ SHIP:{
 		lda Colours
 		sta VIC.SPRITE_COLOR_0
 
-
 		lda #0
 		sta CurrentPlayer
 
@@ -107,8 +106,12 @@ SHIP:{
 
 	Kill: {
 
+
 		lda Dead
 		bne Finish
+
+
+		jsr ENEMIES.BackupMSB
 
 		lda #1
 		sta Dead

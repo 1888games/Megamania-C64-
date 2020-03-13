@@ -49,11 +49,12 @@ MachineType: .byte 0
 ScreenColour:	.byte 0
 
 Difficulty:	.byte 0	// 0 = Bullet 
-Players:	.byte 2
+Players:	.byte 1
 BulletSpeed:  .byte 0
 AutoFire: .byte 1
 
-
+GameOverSequenceID: .byte 0
+GameOverSequences:	.byte 2
 
 Yes:	.byte 28, 8, 22
 No:		.byte 176, 177
@@ -148,7 +149,10 @@ FrameCode: {
 		lda GameOverTimer
 		bne Loop
 
-		jmp TitleScreen
+		lda #GameOverTimeOut
+		sta GameOverTimer
+
+		jmp GameOverLoop
 
 
 }	
@@ -211,6 +215,9 @@ GameScreen:{
 
 	jsr LOGO.GrabCharacters
 
+	lda #1
+	sta LOGO.Active
+
 
 	jsr ResetGame
 
@@ -233,6 +240,7 @@ TitleScreen: {
 	lda #0
 	sta GameActive
 	sta VIC.SPRITE_ENABLE
+	sta LOGO.Active
 
 	lda #%00001110
 	sta VIC.MEMORY_SETUP
@@ -393,13 +401,74 @@ InstructionsLoop:{
 
 	lda REGISTERS.JOY_PORT_2
 	and #JOY_RIGHT
-	beq Curve
+	bne NotCurve
+
+	jmp Curve
+
+	NotCurve:
 
 	lda REGISTERS.JOY_PORT_2
 	and #JOY_UP
 	beq DoAutoFire
 
+
+	lda REGISTERS.JOY_PORT_2
+	and #JOY_DOWN
+	beq NumPlayers
+
 	jmp WaitForRaster
+
+
+
+	NumPlayers:
+
+		lda Players
+		cmp #1
+		beq Set2Player
+
+		Set1Player:
+
+			lda #5
+			sta VIC.COLOR_RAM + 782
+			sta VIC.COLOR_RAM + 783
+			sta VIC.COLOR_RAM + 784
+
+			lda One
+			sta SCREEN_RAM + 782
+
+			lda One + 1
+			sta SCREEN_RAM + 783
+
+			lda One + 2
+			sta SCREEN_RAM + 784
+
+			lda #1
+			sta Players
+		
+			jmp Delay
+
+		Set2Player:
+
+
+			lda #7
+			sta VIC.COLOR_RAM + 782
+			sta VIC.COLOR_RAM + 783
+			sta VIC.COLOR_RAM + 784
+
+			lda Two
+			sta SCREEN_RAM + 782
+
+			lda Two + 1
+			sta SCREEN_RAM + 783
+
+			lda Two + 2
+			sta SCREEN_RAM + 784
+
+			lda #2
+			sta Players
+
+			jmp Delay
+
 
 
 	DoAutoFire:
@@ -609,18 +678,22 @@ ResetGame: {
 	lda ScreenColour
 	sta VIC.BACKGROUND_COLOR
 
-	jsr SCORE.DisplayBest
+
 	jsr SHIP.NewGame
+	jsr ENERGY.NewGame
 	jsr BULLET.Reset
 	jsr ENERGY.Reset
 	jsr LIVES.Reset
 	jsr ENEMIES.Reset
+	jsr SCORE.DisplayBest
+
 
 	lda #ONE
 	sta MAIN.GameActive
 
 	lda #ZERO
 	sta MAIN.GameIsOver
+	sta SCORE.ScoreInitialised
 
 
 
@@ -633,23 +706,115 @@ ResetGame: {
 GameOver: {
 
 	
-	lda #GameOverTimeOut
+	lda #15
 	sta GameOverTimer
 
 	lda #ZERO
 	sta GameActive
+	sta VIC.SPRITE_ENABLE
+	sta GameOverSequenceID
+	sta ENEMIES.EnemiesReady
+
+
+	ldx #0	// reset sprite positions so that unused sprites won't be seen
+	stx VIC.SPRITE_0_X + 2
+	stx VIC.SPRITE_0_X + 4			
+	stx VIC.SPRITE_0_X + 6
+	stx VIC.SPRITE_0_X + 8
+	stx VIC.SPRITE_0_X + 10
+	stx VIC.SPRITE_0_X + 12
+	stx VIC.SPRITE_0_X + 14
+
+	lda VIC.SPRITE_MSB
+	and #%00000001		// reset MSB positions
+	sta VIC.SPRITE_MSB
 
 	lda #ONE
 	sta GameIsOver
 	sta SHIP.Paused
+	sta LOGO.Active
 
-	
+	lda Players
+	sta GameOverSequences
+	inc GameOverSequences
+
+
 
 	rts
 
 }
 
 
+
+GameOverLoop: {
+
+	jsr sid.play
+
+	lda GameOverTimer
+	beq UpdateGameOver
+
+	dec GameOverTimer
+	jmp Okay
+
+	UpdateGameOver:
+
+		lda #GameOverTimeOut
+		sta GameOverTimer
+
+
+		lda GameOverSequenceID
+		beq DisplayBest
+
+		cmp #01
+		beq DisplayPlayer1
+
+		DisplayPlayer2:
+
+			lda #1
+			sta SHIP.CurrentPlayer
+			jsr ENERGY.UpdateColours
+			jsr SCORE.CopyScoreIn
+			jmp IncreaseID
+
+		DisplayPlayer1:
+
+			lda #0
+			sta SHIP.CurrentPlayer
+			jsr ENERGY.UpdateColours
+			jsr SCORE.CopyScoreIn
+			jmp IncreaseID
+
+		DisplayBest:
+
+			jsr SCORE.DisplayBest
+
+	IncreaseID:
+
+		inc GameOverSequenceID
+		lda GameOverSequenceID
+		cmp GameOverSequences
+		bne Okay
+
+		lda #0
+		sta GameOverSequenceID
+
+	Okay:
+
+
+	lda REGISTERS.JOY_PORT_2
+	and #JOY_FIRE
+	bne WaitForRaster
+
+	jmp TitleScreen
+
+	WaitForRaster:
+		lda $d012
+		cmp #100
+		beq GameOverLoop
+
+		jmp WaitForRaster
+
+}
 
 
 

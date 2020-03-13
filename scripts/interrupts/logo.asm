@@ -223,8 +223,12 @@ LOGO: {
 
 	GrabCharacters: {
 
+		lda #8
+		sta ShiftStage
+
 		lda #0
 		ldx #0
+		sta Timer
 
 		CheckLoop:
 

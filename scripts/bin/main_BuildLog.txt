@@ -11,9 +11,9 @@ Default-segment:
   *$0002-$0030 Temp vars zero page
   $0801-$080d Basic
   $080e-$080d Basic End
-  $1000-$2b39 Modules
+  $1000-$2dad Modules
   $3000-$335e sid
-  $5000-$67a4 Unnamed
+  $5000-$6965 Unnamed
   $8000-$80ef Game Map
   $8100-$8193 Game Tiles
   $8200-$8271 Game Colours
