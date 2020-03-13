@@ -1,6 +1,7 @@
 LIVES:{
 
-	Value: .byte 3, 3
+	Value: .byte 6, 6
+
 
 	.label HeartCharacter = 29
 	.label BlankCharacter = 1
@@ -13,6 +14,9 @@ LIVES:{
 
 	Columns:	.byte 0, 15, 17, 19, 21, 23, 25
 	Hearts:		.byte 29, 31, 31, 32
+
+	AddLife:	.byte 0
+	CurrentColour: 	.byte 0
 
 
 	Reset:{
@@ -33,8 +37,15 @@ LIVES:{
 		ldx SHIP.CurrentPlayer
 
 		lda Value, x
-		beq Finish
+		bne StillAlive
 
+		jsr MAIN.GameOver
+
+		jmp Finish
+		
+
+		StillAlive:
+	
 		dec Value, x
 		jsr Draw
 
@@ -45,26 +56,48 @@ LIVES:{
 		rts
 	}
 
+
+
 	GainLife: {
+
 
 		ldx SHIP.CurrentPlayer
 
 		inc Value, x
 		lda Value, x
-		cmp MaxLives
+		cmp #MaxLives
 		bcc Okay
 
 		dec Value, x
+		jmp Finish
 
 		Okay:
 
 		jsr Draw
+
+		Finish:
 
 		rts
 
 	}
 
 
+	Update: {
+
+		lda AddLife
+		beq Finish
+
+		jsr GainLife
+		lda #0
+		sta AddLife
+
+
+		Finish:
+
+
+
+		rts
+	}
 
 	Draw:{
 
@@ -82,6 +115,7 @@ LIVES:{
 
 			lda Columns, x
 			sta Column
+
 
 			cpx LivesLeft
 		

@@ -76,10 +76,12 @@ BULLET:{
 		bne Finish
 
 		ldx #1
+		ldy #2
 		lda Active, x
 		beq OkayToFire
 
 		inx
+		dey
 		lda Active, x
 		beq OkayToFire
 
@@ -92,6 +94,14 @@ BULLET:{
 			adc #8
 			sta NewBulletX_LSB
 
+			// lda PosX, y
+			// sec
+			// sbc EnemyFireX_LSB
+			// cmp #12
+			// bcc Finish
+
+		
+
 			lda EnemyFireX_MSB
 			adc #0
 			sta NewBulletX_MSB
@@ -102,6 +112,27 @@ BULLET:{
 			adc #26
 			sta NewBulletY
 
+
+			lda Active, y
+			beq Okay
+
+			lda PosX, y
+			sec
+			sbc NewBulletX_LSB
+
+			bcs Positive
+
+			eor #$ff
+			adc #01
+
+			Positive:
+
+			cmp #12
+			bcs Okay
+
+			jmp Finish
+
+			Okay:
 
 			jsr Fire
 
@@ -290,7 +321,7 @@ BULLET:{
 				lda StopProgram
 				beq DontStop
 
-				.break
+			//	.break
 				nop
 
 				DontStop:
@@ -400,8 +431,8 @@ BULLET:{
 				tya
 				pha
 
-				lda Colour
-				jsr PLOT.ColorCharacter
+				//lda Colour
+				//jsr PLOT.ColorCharacter
 
 				pla
 				tay
@@ -417,8 +448,8 @@ BULLET:{
 
 				jsr PLOT.PlotCharacter
 
-				lda Colour
-				jsr PLOT.ColorCharacter
+				//lda Colour
+				//jsr PLOT.ColorCharacter
 
 			Debug:
 
@@ -738,6 +769,7 @@ BULLET:{
 
 			clc
 			adc Speed, x
+			adc MAIN.BulletSpeed
 			jmp CheckPosition
 
 		Rising:

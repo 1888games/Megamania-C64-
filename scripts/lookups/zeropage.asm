@@ -32,7 +32,7 @@ NextRowStartIndex:	.byte 0
 NewBulletEnemyID:	.byte 0
 RowIsOdd:			.byte 0
 New_X_index:		.byte 0
-
+ScoreDigit:			.byte 0
 
 ZP_COUNTER: 	.byte $00
 

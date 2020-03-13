@@ -41,15 +41,11 @@ sfx_play:
 //when sid is not playing, we can use any of the channels to play effects
 play_no_music:
 {
-
+			lda channels, x
+			sta channel
 			lda wavetable_l,x
 			ldy wavetable_h,x
 			ldx channel
-			dex
-			bpl !skp+			
-			ldx #2
-		!skp:
-			stx channel
 			pha
 			lda times7,x
 			tax
@@ -73,6 +69,19 @@ play_with_music:
 }
 
 
+StopChannel0: {
+
+	lda #0
+	sta $d404
+
+	rts
+
+
+}
+
+
+
+
 //effects must appear in order of priority, lowest priority first.
 .label SFX_FIRE = 0
 .label SFX_DEAD = 1
@@ -84,6 +93,8 @@ play_with_music:
 .label SFX_DOOR = 7
 .label SFX_BONUS = 8
 
+channels:	.byte 2, 0, 1, 1, 0, 0, 0, 0, 0, 0
+
 sfx_fire:
 .import binary "../../Assets/sfx/Player_fire.bin"
 
@@ -92,7 +103,7 @@ sfx_dead:
 
 
 sfx_hit:
-.import binary "../../Assets/sfx/Alien_die.bin"
+.import binary "../../Assets/sfx/Alien_die2.bin"
 
 
 sfx_up:
@@ -102,10 +113,10 @@ sfx_down:
 .import binary "../../Assets/sfx/Energy_down.bin"
 
 sfx_lift:
-.import binary "../../Assets/sfx/boing.snd"
+.import binary "../../Assets/sfx/Alien_die.bin"
 
 sfx_plane:
-.import binary "../../Assets/sfx/sfx_arp"
+.import binary "../../Assets/sfx/Player_fire2.bin"
 
 sfx_door:
 .import binary "../../Assets/sfx/sfx_pst"

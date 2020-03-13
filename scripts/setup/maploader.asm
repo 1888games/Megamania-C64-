@@ -14,9 +14,10 @@ MAPLOADER: {
 	CurrentColours:	.word $0000
 
 
-	Maps: .word $8000, $8300
-	MapTiles: .word $8100, $8400
-	Colours: .word $8200, $8600
+	Maps: .word $8000, $8300, $9000
+	MapTiles: .word $8100, $8400, $9200
+	Colours: .word $8200, $8600, $9400
+	Offset: .byte 40, 40, 0
 
 	CurrentMapID: .byte 1
 
@@ -47,29 +48,28 @@ MAPLOADER: {
 		sta CurrentColours + 1
 
 
-		// lda CurrentMapID
-		// beq Game
-
-
-		// // load first char address into first FEED
-		// lda #<SCREEN_RAM
-		// sta Screen + 1
-		// lda #>SCREEN_RAM
-		// sta Screen + 2
-
-		// // load first colour address into second FEED
-		// lda #<VIC.COLOR_RAM
-		// sta Colour + 1
-		// lda #>VIC.COLOR_RAM
-		// sta Colour + 2
-		// jmp GetMapAddress
-
-
-		Game:
+		 lda CurrentMapID
+		 cmp #2
+		 bne Game
 
 
 		// load first char address into first FEED
-		lda #<SCREEN_RAM + 40
+		lda #<SCREEN_RAM
+		sta Screen + 1
+		lda #>SCREEN_RAM
+		sta Screen + 2
+
+		// load first colour address into second FEED
+		lda #<VIC.COLOR_RAM
+		sta Colour + 1
+		lda #>VIC.COLOR_RAM
+		sta Colour + 2
+		jmp GetMapAddress
+
+		Game:
+
+		// load first char address into first FEED
+		lda #<SCREEN_RAM +40
 		sta Screen + 1
 		lda #>SCREEN_RAM + 40
 		sta Screen + 2

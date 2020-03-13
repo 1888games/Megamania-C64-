@@ -1,31 +1,127 @@
 SCORE:{
 
-	Value: .byte 0, 0, 0	// H M L
+	Value: .byte 0, 0, 0, 0	// H M L
+	Value2: .byte 0, 0, 0, 0
+
 	Best: .byte 0, 0, 0
 
+	PlayerScores: .byte 0, 0, 0, 0
+	 			  .byte 0, 0, 0, 0
 
 	.label CharacterSetStart = 5
+
+				//    0               1              2               3               4
+	Characters:	.byte 33, 34, 35, 36, 37, 39, 38, 1, 40, 42, 41, 36, 43, 44, 41, 36, 45, 46, 47, 48
+				//    5               6              7                 8                9
+				.byte 49, 50, 51, 52, 53, 50, 35, 36,55,  58, 56, 57, 103, 44, 35, 36, 104, 105, 35, 36
 
 
 
 	ScoreToAdd: .byte 0
+	DrawWhenFree:	.byte 0
+	ScoreInitialised: .byte 0
 
 	Reset:{
+
+		lda ScoreInitialised
+		bne Finish
+
+		lda #1
+		sta ScoreInitialised
 
 		lda #ZERO
 		sta Value
 		sta Value + 1
 		sta Value + 2
+		sta Value + 4
+		sta Value + 5
+		sta Value + 6
 		sta ScoreToAdd
 		sta Amount
 
-		//jsr Draw
+		//lda #153
+		//sta Value + 1
+
+		jsr Draw
+
+		Finish:
+
 		//jsr DrawBest
 		rts
 
 	}
 
 
+	BackupScore:		{
+
+		lda SHIP.CurrentPlayer
+		asl
+		asl
+		tax
+
+		lda Value
+		sta PlayerScores, x
+
+		lda Value + 1
+		sta PlayerScores + 1, x
+
+		lda Value + 2
+		sta PlayerScores + 2, x
+
+		rts
+
+	}
+
+
+	CopyScoreIn: {
+
+		lda SHIP.CurrentPlayer
+		asl
+		asl
+		tax
+
+		lda PlayerScores, x
+		sta Value
+
+		lda PlayerScores + 1, x
+		sta Value + 1
+
+		lda PlayerScores + 2, x
+		sta Value + 2
+
+		jsr Draw 
+
+		rts
+
+	}
+
+	DisplayBest: {
+
+		lda #0
+		sta ScoreToAdd
+		sta Amount
+
+
+		lda Best
+		sta Value
+
+		lda Best + 1
+		sta Value + 1
+
+		lda Best + 2
+		sta Value + 2
+
+		lda #0
+		sta ScoreInitialised
+
+		jsr Draw 
+
+		rts
+
+
+
+
+	}
 
 	Set: {
 		ldy #0
@@ -85,12 +181,35 @@ SCORE:{
 
 	CheckScoreToAdd:{
 
+
+		lda DrawWhenFree
+		beq OkayToAddScore
+
+		jsr Draw
+		lda #0
+		sta DrawWhenFree
+		jmp Finish
+
+		OkayToAddScore:
+
 		lda ScoreToAdd
 		beq Finish
+		//Loop:
 
-		dec ScoreToAdd
-		lda #ONE
+		sec
+		sbc #10
+		sta ScoreToAdd
+
+		lda #10
 		jsr Add
+
+
+		lda SHIP.Paused
+		beq Finish
+
+		jsr Draw
+		lda #0
+		sta DrawWhenFree
 
 		Finish:
 
@@ -110,9 +229,19 @@ Add: {
 		adc #ZERO
 		sta Value+1
 		lda Value+2
-		adc #ZERO
-		sta Value+2
 
+		adc #ZERO
+		cmp Value+2
+		beq NoExtraLife
+
+		pha
+		lda #1
+		sta LIVES.AddLife
+		pla
+
+		NoExtraLife:
+
+		sta Value+2
 		cld
 
 		cmp Best + 2
@@ -155,13 +284,15 @@ Add: {
 		lda Value + 0
 		sta Best + 0
 
-		jsr DrawBest
+		//jsr DrawBest
 
 
 		NoNewBest:
 
+		lda #1
+		sta DrawWhenFree
 		
-		jsr Draw
+	
 		//jsr SOUND.ScoreSound
 		rts
 
@@ -216,9 +347,12 @@ Add: {
 	}
 
 
+
+
 	Draw:{
 
-		ldy #5	// screen offset, right most digit
+	
+		ldy #10	// screen offset, right most digit
 		ldx #ZERO	// score byte index
 
 		ScoreLoop:
@@ -226,15 +360,14 @@ Add: {
 			lda Value,x
 			pha
 			and #$0f	// keep lower nibble
+			sta ScoreDigit
 			jsr PlotDigit
-			jsr PlotDigitBottom
 			pla
 			lsr
 			lsr
 			lsr	
 			lsr // shift right to get higher lower nibble
 			jsr PlotDigit
-			jsr PlotDigitBottom
 			inx 
 			cpx #3
 			bne ScoreLoop
@@ -243,28 +376,41 @@ Add: {
 
 		PlotDigit: {
 
-			clc
-			adc #CharacterSetStart
-			sta SCREEN_RAM + 2, y
 
 
-			rts
+			stx CurrentID
 
+			asl
+			asl
+			tax
 
-		}
+			lda Characters, x
+			sta SCREEN_RAM + 935, y
 
+			inx
+			lda Characters, x
+			sta SCREEN_RAM + 936, y
 
-		PlotDigitBottom: {
+			inx
+			lda Characters, x
+			sta SCREEN_RAM + 895, y
 
-			clc
-			adc #10
-			sta SCREEN_RAM + 42, y
+			inx
+			lda Characters, x
+			sta SCREEN_RAM+ 896, y
+
 			dey
+			dey
+
+			ldx CurrentID
+
 			rts
 
 
 		}
 
+
+		
 
 
 		rts

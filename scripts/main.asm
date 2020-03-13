@@ -25,9 +25,12 @@ BasicUpstart2(Entry)
 #import "interrupts/ship.asm"
 #import "interrupts/bullet.asm"
 #import "interrupts/energy.asm"
+
+*= $5000
 #import "interrupts/lives.asm"
 #import "interrupts/enemies.asm"
 #import "interrupts/reset.asm"
+#import "interrupts/logo.asm"
 
 
 GameOverTimer: .byte 0
@@ -35,7 +38,7 @@ GameActive: .byte 0
 LifeLostTimer: .byte 0
 PerformFrameCodeFlag:	.byte 0
 GameIsOver:	.byte 0
-InitialCooldown: .byte 60, 60
+InitialCooldown: .byte 30, 30
 
 MachineType: .byte 0
  
@@ -46,16 +49,22 @@ MachineType: .byte 0
 ScreenColour:	.byte 0
 
 Difficulty:	.byte 0	// 0 = Bullet 
-Players:	.byte 1
+Players:	.byte 2
+BulletSpeed:  .byte 0
+AutoFire: .byte 1
+
+
+
+Yes:	.byte 28, 8, 22
+No:		.byte 176, 177
+One:	.byte 18, 17, 8
+Two:	.byte 182, 185, 177
 
 //exomizer sfx sys -t 64 -x "inc $d020" -o yakf.exo yakf.prg
 Entry:
 	
-
-
 	lda #0
 	jsr sid.init
-
 
 	jsr set_sfx_routine
 
@@ -74,8 +83,9 @@ Entry:
 	Finish:
 
 
+	//jmp Instructions
 		
-	jmp StartGame
+	//jmp StartGame
 	jmp TitleScreen
 
  
@@ -123,8 +133,12 @@ FrameCode: {
 	lda #0
 	sta PerformFrameCodeFlag
 
+	//jsr SCORE.CheckScoreToAdd
+
 	lda GameActive
 	beq GamePaused
+
+	jmp Loop
 
 	GamePaused:
 
@@ -136,10 +150,12 @@ FrameCode: {
 
 		jmp TitleScreen
 
-	
 
 }	
  
+
+
+
 
 
 StartGame: {
@@ -150,7 +166,11 @@ StartGame: {
 
 }
 
+
 GameScreen:{
+
+	lda #ALL_ON
+	sta VIC.SPRITE_ENABLE
 
 	lda #%00001100
 	sta VIC.MEMORY_SETUP
@@ -176,19 +196,43 @@ GameScreen:{
 
 	jsr MAPLOADER.DrawMap
 
+    ldx #0
+	lda #0
+
+	Loop:
+		sta SCREEN_RAM, x
+		inx
+		cpx #40
+		beq Done
+		jmp Loop
+
+	Done:
+
+
+	jsr LOGO.GrabCharacters
+
+
 	jsr ResetGame
 
 	rts	
 
 }
 
+
+
 TitleScreen: {
+
+
+
+	lda InitialCooldown + 1
+	sta InitialCooldown
 
 	lda #1
 	sta MAPLOADER.CurrentMapID
 
 	lda #0
 	sta GameActive
+	sta VIC.SPRITE_ENABLE
 
 	lda #%00001110
 	sta VIC.MEMORY_SETUP
@@ -209,7 +253,36 @@ TitleScreen: {
  	ora #%00010000
  	sta VIC.SCREEN_CONTROL_2
 
+ 	sfx(4)
+
+
 	jsr MAPLOADER.DrawMap	
+
+	lda SCREEN_RAM
+	tay
+
+	lda VIC.COLOR_RAM
+
+	//.break
+
+ 	ldx #0
+	lda #0
+
+	Loop:
+
+		lda #0
+		sta SCREEN_RAM, x
+
+		lda #$5E
+		sta VIC.COLOR_RAM, x
+
+
+		inx
+		cpx #40
+		beq Done
+		jmp Loop
+
+	Done:
 
 
 
@@ -218,14 +291,301 @@ TitleScreen: {
 
 
 
-TitleLoop: {
+Instructions:{
+
+	sfx(6)
+
+	lda InitialCooldown + 1
+	sta InitialCooldown
+
+	lda VIC.SCREEN_CONTROL
+	and #%11101111
+	sta VIC.SCREEN_CONTROL
+
+	lda #%00001010
+	sta VIC.MEMORY_SETUP
+
+
+	//ldx #
+	//jsr VIC.ColourLastRow
+
+	lda #BLACK
+	sta VIC.BORDER_COLOR
+
+	lda #RED
+	sta VIC.EXTENDED_BG_COLOR_1
+	lda #YELLOW
+	sta VIC.EXTENDED_BG_COLOR_2
+
+
+	lda #2
+	sta MAPLOADER.CurrentMapID
+
+	lda VIC.SCREEN_CONTROL_2
+	and #%11101111
+ 	ora #%00010000
+ 	sta VIC.SCREEN_CONTROL_2
+
+
+	jsr MAPLOADER.DrawMap	
+
+	ldx #0
+	lda #0
+
+	Loop:
+		sta SCREEN_RAM + 960, x
+		inx
+		cpx #40
+		beq Done
+		jmp Loop
+
+	Done:
+
+	//jsr VIC.ColourTextRow
+
+	WaitForRaster:
+		lda $d012
+		cmp #1
+		beq ShowScreen
+		jmp WaitForRaster
+
+	ShowScreen:
+
+		lda VIC.SCREEN_CONTROL
+		ora #%00010001
+		sta VIC.SCREEN_CONTROL
+
+
+	jmp InstructionsLoop
+
+}
+
+
+
+InstructionsLoop:{
+
+	jsr sid.play
+
+	lda InitialCooldown
+	beq Okay
 
 	dec InitialCooldown
-	beq WaitForRaster
+	jmp WaitForRaster
+
+	Okay:
 
 	lda REGISTERS.JOY_PORT_2
 	and #JOY_FIRE
-	beq StartGame
+	bne NotFire
+
+	jmp StartGame
+
+	NotFire:
+
+
+	lda REGISTERS.JOY_PORT_2
+	and #JOY_LEFT
+	bne NotMissiles
+
+	jmp Missiles
+
+	NotMissiles:
+
+	lda REGISTERS.JOY_PORT_2
+	and #JOY_RIGHT
+	beq Curve
+
+	lda REGISTERS.JOY_PORT_2
+	and #JOY_UP
+	beq DoAutoFire
+
+	jmp WaitForRaster
+
+
+	DoAutoFire:
+
+		lda AutoFire
+		bne SetAutoNo
+
+		SetAutoYes:
+
+			lda #5
+			sta VIC.COLOR_RAM + 622
+			sta VIC.COLOR_RAM + 623
+			sta VIC.COLOR_RAM + 624
+
+			lda Yes
+			sta SCREEN_RAM + 622
+
+			lda Yes + 1
+			sta SCREEN_RAM + 623
+
+			lda Yes + 2
+			sta SCREEN_RAM + 624
+
+			lda #1
+			sta AutoFire
+		
+			jmp Delay
+
+		SetAutoNo:
+
+
+			lda #2
+			sta VIC.COLOR_RAM + 622
+			sta VIC.COLOR_RAM + 623
+			sta VIC.COLOR_RAM + 624
+
+			lda No
+			sta SCREEN_RAM + 622
+
+			lda No + 1
+			sta SCREEN_RAM + 623
+
+			lda #0
+			sta SCREEN_RAM + 624
+			sta AutoFire
+
+			jmp Delay
+
+
+
+	Curve:
+
+		
+		lda Difficulty
+		beq SetCurveNo
+
+		SetCurveYes:
+
+			lda #5
+			sta VIC.COLOR_RAM + 462
+			sta VIC.COLOR_RAM + 463
+			sta VIC.COLOR_RAM + 464
+
+			lda Yes
+			sta SCREEN_RAM + 462
+
+			lda Yes + 1
+			sta SCREEN_RAM + 463
+
+			lda Yes + 2
+			sta SCREEN_RAM + 464
+
+			lda #0
+			sta Difficulty
+		
+			jmp Delay
+
+		SetCurveNo:
+
+
+			lda #2
+			sta VIC.COLOR_RAM + 462
+			sta VIC.COLOR_RAM + 463
+			sta VIC.COLOR_RAM + 464
+
+			lda No
+			sta SCREEN_RAM + 462
+
+			lda No + 1
+			sta SCREEN_RAM + 463
+
+			lda #0
+			sta SCREEN_RAM + 464
+
+			lda #1
+			sta Difficulty
+
+			jmp Delay
+
+
+	Missiles:
+
+		lda BulletSpeed
+		beq SetBulletNo
+
+		SetBulletYes:
+
+			lda #5
+			sta VIC.COLOR_RAM + 302
+			sta VIC.COLOR_RAM + 303
+			sta VIC.COLOR_RAM + 304
+
+			lda Yes
+			sta SCREEN_RAM + 302
+
+			lda Yes + 1
+			sta SCREEN_RAM + 303
+
+			lda Yes + 2
+			sta SCREEN_RAM + 304
+
+			lda #0
+			sta BulletSpeed
+		
+			jmp Delay
+
+		SetBulletNo:
+
+			lda #2
+			sta VIC.COLOR_RAM + 302
+			sta VIC.COLOR_RAM + 303
+			sta VIC.COLOR_RAM + 304
+
+			lda No
+			sta SCREEN_RAM + 302
+
+			lda No + 1
+			sta SCREEN_RAM + 303
+
+			lda #0
+			sta SCREEN_RAM + 304
+
+			lda #1
+			sta BulletSpeed
+
+
+			jmp Delay
+
+		//sta //GameMode
+		jmp StartGame
+
+
+	Delay:
+
+	lda #25
+	sta InitialCooldown
+
+	WaitForRaster:
+		lda $d012
+		cmp #100
+		bne WaitForRaster
+		jmp InstructionsLoop
+
+
+
+}
+
+
+
+TitleLoop: {
+
+	jsr sid.play
+
+	lda InitialCooldown
+	beq Okay
+
+	dec InitialCooldown
+	jmp WaitForRaster
+
+	Okay:
+
+	lda REGISTERS.JOY_PORT_2
+	and #JOY_FIRE
+	bne WaitForRaster
+
+	jmp Instructions
 
 	WaitForRaster:
 		lda $d012
@@ -249,8 +609,8 @@ ResetGame: {
 	lda ScreenColour
 	sta VIC.BACKGROUND_COLOR
 
-	jsr SCORE.Reset
-	jsr SHIP.Reset
+	jsr SCORE.DisplayBest
+	jsr SHIP.NewGame
 	jsr BULLET.Reset
 	jsr ENERGY.Reset
 	jsr LIVES.Reset
@@ -272,9 +632,7 @@ ResetGame: {
 
 GameOver: {
 
-	lda #RED
-	sta VIC.BORDER_COLOR 
-
+	
 	lda #GameOverTimeOut
 	sta GameOverTimer
 
@@ -283,9 +641,9 @@ GameOver: {
 
 	lda #ONE
 	sta GameIsOver
+	sta SHIP.Paused
 
-	sfx(1)
-
+	
 
 	rts
 

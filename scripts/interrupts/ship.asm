@@ -34,25 +34,37 @@ SHIP:{
     .label KillShipSoundID= 1
 
 
-	Reset: {
+    NewGame: {
 
-
-		lda #22
+    	lda #22
 		sta SPRITE_POINTERS
 
-		ldx CurrentPlayer
-
-		lda Colours, x
+		lda Colours
 		sta VIC.SPRITE_COLOR_0
+
+
+		lda #0
+		sta CurrentPlayer
+
+		jsr Reset
+
+		jsr ENERGY.UpdateColours
+
+
+    	rts
+
+    }
+
+
+
+	Reset: {
+
 
 		lda #StartX
 		sta PosX_LSB
 
 		lda #0
 		sta PosX_MSB
-
-
-
 
 		jsr SetPosition
 
@@ -101,9 +113,13 @@ SHIP:{
 		lda #1
 		sta Dead
 		sta Paused
+		sta ENERGY.Died
 
 		lda #0
 		sta DeathSequencePosition
+
+		
+
 
 		lda DeathTimer + 1
 		sta DeathTimer
@@ -161,16 +177,22 @@ SHIP:{
 			lda #1
 			sta Paused
 
-
-			//sta VIC.SPRITE_COLOR_0 
+			lda Colours, y 
+			sta VIC.SPRITE_COLOR_0 
 
 			jsr Reset
 			jsr LIVES.LoseLife
+
+			lda MAIN.GameIsOver
+			beq Okay
+
+			jmp Finish
+
+			Okay:
+
 			jsr ENERGY.Reset
 			jsr BULLET.Reset
 			jsr ENEMIES.ResetLevel
-
-
 
 			jmp Finish
 
@@ -298,13 +320,21 @@ SHIP:{
 	
 		CheckFire:
 
+			lda MAIN.AutoFire
+			bne CheckUpThisFrame
+
+			lda INPUT.FIRE_UP_THIS_FRAME, y
+			beq NoFire
+
+			jsr Fire
+
+			CheckUpThisFrame:
 
 			lda INPUT.JOY_FIRE_NOW, y
 			beq NoFire
 
 			jsr Fire
 			
-
 		NoFire:
 
 			jsr SetPosition

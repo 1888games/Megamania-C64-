@@ -1,7 +1,7 @@
 ENERGY: {
 	
 
-	Timer:	.byte 5, 28, 0
+	Timer:	.byte 5, 25, 2, 1
 	CurrentCharacter: .byte 0
 	CurrentFillValue:	.byte 0
 
@@ -16,6 +16,8 @@ ENERGY: {
 	Decreasing:	.byte 0
 	LiveLost:	.byte 0
 	LevelComplete:		.byte 0
+	Waiting: .byte 0
+	Died:	.byte 0
 
 
 	Reset: {
@@ -27,12 +29,16 @@ ENERGY: {
 		sta Decreasing
 		sta LiveLost
 		sta LevelComplete
+	
+
+		lda #1
+		sta Waiting
 
 		lda Timer + 2
+		lda #60
 		sta Timer
 
-		sfx(3)
-
+			
 
 		rts
 
@@ -87,10 +93,84 @@ ENERGY: {
 	}
 
 
+	SwitchPlayer:{
+
+		lda Died
+		beq Finish
+
+		lda #0
+		sta Died
+
+		lda MAIN.Players
+		cmp #1
+		beq Finish
+
+		jsr SCORE.BackupScore
+
+		lda SHIP.CurrentPlayer
+		beq PlayerTwo
+
+		lda #0
+		sta SHIP.CurrentPlayer
+		jmp Done
+
+		PlayerTwo:
+
+		lda #1
+		sta SHIP.CurrentPlayer
+
+
+		Done:
+
+
+		jsr LIVES.Draw
+
+		jsr UpdateColours
+		jsr SCORE.CopyScoreIn
+		
+
+
+		Finish:
+
+
+
+		rts
+	}
 
 	
 
+
+	UpdateColours: {
+
+		
+		ldx SHIP.CurrentPlayer
+		lda SHIP.Colours, x
+		sta VIC.SPRITE_COLOR_0
+
+		.for(var i=0; i<19; i++) {
+			.for(var j=0; j<40; j++) {
+				sta VIC.COLOR_RAM + (i * 40) + j
+			}
+			
+		}
+
+		clc
+		adc #8
+		
+		.for(var i=21; i<24; i++) {
+			.for(var j=0; j<40; j++) {
+				sta VIC.COLOR_RAM + (i * 40) + j
+			}
+			
+		}
+
+
+		rts
+	}
+
 	Update: {
+
+
 
 		lda SHIP.Dead
 		beq Okay
@@ -107,11 +187,36 @@ ENERGY: {
 
 		TimerExpired:
 
-			lda LevelComplete
-			beq CheckWhetherDecreasing
+
+			lda Waiting
+			beq NotWaiting
+
+			lda #0
+			sta Waiting
 
 			lda Timer + 2
 			sta Timer
+
+			jsr SwitchPlayer
+
+			jsr StopChannel0
+			sfx(3)
+
+			jmp Finish
+
+
+			NotWaiting:
+
+			lda LevelComplete
+			beq CheckWhetherDecreasing
+
+
+			lda Timer + 3
+			sta Timer
+
+			lda ENEMIES.CurrentScoreAmount
+			jsr SCORE.ScorePoints
+
 
 			jmp Decrease
 
@@ -125,6 +230,7 @@ ENERGY: {
 
 			lda Timer + 1
 			sta Timer
+
 
 		Decrease:
 
@@ -208,9 +314,13 @@ ENERGY: {
 				lda #1
 				sta Decreasing
 
+				jsr SCORE.Reset
+
 				lda #InitialDelay
 				sta Timer
 
+				jsr LOGO.ShowActivision
+			
 				jsr ENEMIES.PlayerReady
 
 				dec CurrentCharacter

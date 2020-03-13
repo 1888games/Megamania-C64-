@@ -16,34 +16,34 @@
  	.import binary "../../assets/sprites.bin"
 
 
-* = $8200 "Game Colours"
+* = $8200 "Game Colours" 
+CHAR_COLORS: .import binary "../assets/megamania - CharAttribs.bin"
+
+* = $8000 "Game Map" 
+MAP: .import binary "../assets/megamania - Map (20x12).bin"
+
+* = $8100 "Game Tiles" 
+MAP_TILES: .import binary "../assets/megamania - Tiles.bin"
 
 
-	CHAR_COLORS:
-		.import binary "../assets/megamania - CharAttribs.bin"
+* = $8600 "Title Colours" 
+.import binary "../assets/title - CharAttribs.bin"
 
-* = $8000 "Game Map"
+* = $8300 "Title Map" 
+.import binary "../assets/title - Map (20x12).bin"
 
-	MAP:
-		.import binary "../assets/megamania - Map (20x12).bin"
+* = $8400 "Title Tiles" 
+.import binary "../assets/title - Tiles.bin"
 
-* = $8100 "Game Tiles"
+* = $9400 "Ins Colours" 
+ .import binary "../assets/megamania_ins - CharAttribs.bin"
 
-	MAP_TILES:
-		.import binary "../assets/megamania - Tiles.bin"
+* = $9000"Ins Map" 
+.import binary "../assets/megamania_ins - Map (20x12).bin"
 
-* = $8600 "Title Colours"
+* = $9200 "Ins Tiles" 
+ .import binary "../assets/megamania_ins - Tiles.bin"
 
-		.import binary "../assets/title - CharAttribs.bin"
-
-* = $8300 "Title Map"
-
-		.import binary "../assets/title - Map (20x12).bin"
-
-* = $8400 "Title Tiles"
-
-
-		.import binary "../assets/title - Tiles.bin"
 
 
 
@@ -55,6 +55,13 @@
 * = $f800 "Title Charset"
 	TITLE_CHAR_SET:
 		.import binary "../assets/title - Chars.bin"   //roll 12!
+
+
+
+		
+* = $e800 "Charset"
+	INS_CHAR_SET:
+		.import binary "../assets/megamania_ins - Chars.bin"   //roll 12!
 
 
 	.pc = sid.location "sid"

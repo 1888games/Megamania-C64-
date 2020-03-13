@@ -71,7 +71,7 @@ IRQ: {
 		cmp #208
 		bcc Okay
 
-		.break
+		//.break
 		nop
 
 		Okay:
@@ -163,10 +163,13 @@ IRQ: {
 		
 		ldy #2
 		jsr INPUT.ReadJoystick
+
+		lda MAIN.GameActive
+		beq NoSprites
 	
 		jsr SHIP.Update
 		jsr ENERGY.Update
-		jsr SCORE.CheckScoreToAdd
+		
 
 		ldx #2
 		jsr BULLET.UpdateSpecificBullet
@@ -213,7 +216,10 @@ IRQ: {
 
 		:StoreState()
 
-	//	SetDebugBorder(2)
+		lda #1
+		sta MAIN.PerformFrameCodeFlag
+
+		SetDebugBorder(2)
 
 	//	ldy #2
 	//	jsr INPUT.ReadJoystick
@@ -225,15 +231,23 @@ IRQ: {
 
 		GameActive:
 
-			
-			//jsr SHIP.Update
 			jsr BULLET.Update
-			//jsr ENERGY.Update
+			jsr LIVES.Update
+			
 			jsr ENEMIES.Update
 			jsr sid.play
+
+
+			lda SHIP.Paused
+			beq Finish
+
+			jsr LOGO.Update
+
 			jmp Finish
 
 		Paused:
+
+
 
 		 lda MAIN.GameIsOver
 		 beq Finish
@@ -258,6 +272,13 @@ IRQ: {
 
 	
 		Finish:
+
+		ldy VIC.RASTER_Y
+		cmp #240
+		bcs BackToSprite
+
+		
+		jsr SCORE.CheckScoreToAdd
 
 		BackToSprite:
 //
