@@ -44,6 +44,10 @@ LIVES:{
 		lda Value, x
 		bne StillAlive
 
+		lda MAIN.Players
+		cmp #1
+		beq GameFinish
+
 		lda #1
 		sta Dead, x
 		
@@ -53,8 +57,9 @@ LIVES:{
 		cmp #2
 		bcc Finish
 
-		jsr MAIN.GameOver
+		GameFinish:
 
+		jsr MAIN.GameOver
 		jmp Finish
 		
 
