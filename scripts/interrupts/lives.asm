@@ -44,12 +44,16 @@ LIVES:{
 		lda Value, x
 		bne StillAlive
 
+		jsr SCORE.BackupScore
+
 		lda MAIN.Players
 		cmp #1
 		beq GameFinish
 
 		lda #1
 		sta Dead, x
+
+	
 		
 		lda Dead
 		clc

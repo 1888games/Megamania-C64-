@@ -3,7 +3,7 @@ flex pass 1
 flex pass 2
 flex pass 3
 Output pass
-Writing prg file: C:\Users\Nick\Dropbox\C64\Projects\Megamania\scripts\bin\main.prg
+Writing prg file: C:\Users\Nick\Dropbox\C64\Projects\Complete\Megamania\scripts\bin\main.prg
 
 Memory Map
 ----------
@@ -11,9 +11,9 @@ Default-segment:
   *$0002-$0030 Temp vars zero page
   $0801-$080d Basic
   $080e-$080d Basic End
-  $1000-$2dad Modules
+  $1000-$2dc6 Modules
   $3000-$335e sid
-  $5000-$696c Unnamed
+  $5000-$696f Unnamed
   $8000-$80ef Game Map
   $8100-$8193 Game Tiles
   $8200-$8271 Game Colours
@@ -28,5 +28,5 @@ Default-segment:
   $f000-$f38f Charset
   $f800-$fff7 Title Charset
 
-Writing Vice symbol file: C:\Users\Nick\Dropbox\C64\Projects\Megamania\scripts\bin\main.vs
+Writing Vice symbol file: C:\Users\Nick\Dropbox\C64\Projects\Complete\Megamania\scripts\bin\main.vs
 Writing Symbol file: main.sym

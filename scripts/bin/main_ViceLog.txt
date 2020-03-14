@@ -39,7 +39,7 @@ using GTK3 backend: OpenGL
 Creating GtkGlArea widget.
 Warning - GTKGL: OpenGL version 3.2 not supported in this context
 GdkGlkContext is in legacy (OpenGL 1.1) mode.
-Palette: Loading palette `C:\C64\Tools\Vice\C64\pepto-pal.vpl'.
+Palette: Loading palette `C:\C64\Tools\Vice\C64\ptoing.vpl'.
 Sound: Available sound devices: dx wmm dummy fs dump wav voc iff aiff flac ogg soundmovie
 Keyboard: Loading keymap `C:\C64\Tools\Vice\C64\gtk3_sym.vkm'.
 Keyboard: Warning - gtk3_sym.vkm: !LCBM !VCBM !LCTRL !VCTRL not defined.
@@ -51,7 +51,7 @@ Error - CRT header invalid.
 CART: 'bin/main.prg' is not a valid CRT file.
 AUTOSTART: Loading PRG file `bin/main.prg' with direct RAM injection.
 AUTOSTART: Resetting the machine to autostart '*'
-VIC-II: VSP Bug: safe channels are: 2457. Emulation of memory corruption is disabled.
+VIC-II: VSP Bug: safe channels are: 12457. Emulation of memory corruption is disabled.
 AUTOSTART: Turning Warp mode on
 AUTOSTART: `bin/main.prg' recognized as program/p00 file.
 Main CPU: starting at ($FFFC).

@@ -107,13 +107,13 @@ sfx_hit:
 
 
 sfx_up:
-.import binary "../../Assets/sfx/Energy_up.bin"
+.import binary "../../Assets/sfx/Energy_up2.bin"
 
 sfx_down:
 .import binary "../../Assets/sfx/Energy_down.bin"
 
 sfx_lift:
-.import binary "../../Assets/sfx/Alien_die.bin"
+.import binary "../../Assets/sfx/Alien_die5.bin"
 
 sfx_plane:
 .import binary "../../Assets/sfx/Player_fire2.bin"
