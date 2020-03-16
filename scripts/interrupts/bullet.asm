@@ -15,6 +15,8 @@ BULLET:{
 	EnemyFireY:	.byte 120
 
 
+
+
 	.label MinY  = 60
 	.label MaxY = 212
 	.label StartCharacter = 59
@@ -244,6 +246,13 @@ BULLET:{
 				lda Colours, x
 				sta Colour
 
+				cpx #0
+				beq CalcRow
+
+				ldy SHIP.CurrentPlayer
+				lda SHIP.Colours, y
+				sta Colour
+
 			CalcRow:
 
 				lda PosY, x
@@ -431,8 +440,8 @@ BULLET:{
 				tya
 				pha
 
-				//lda Colour
-				//jsr PLOT.ColorCharacter
+				lda Colour
+				jsr PLOT.ColorCharacter
 
 				pla
 				tay
@@ -448,8 +457,8 @@ BULLET:{
 
 				jsr PLOT.PlotCharacter
 
-				//lda Colour
-				//jsr PLOT.ColorCharacter
+				lda Colour
+				jsr PLOT.ColorCharacter
 
 			Debug:
 
