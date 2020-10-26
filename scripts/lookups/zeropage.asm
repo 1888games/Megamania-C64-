@@ -14,7 +14,7 @@ CharacterID:			.byte $00
 BulletPositionAdjX:		.byte $00
 BulletPositionAdjY:		.byte $00
 Colour:					.byte $00
-LivesLeft:			.byte $00
+LivesLeft:				.byte $00
 CharOffset:				.byte $00
 WaveAddress:			.word $0000
 RowLoopEnd:				.byte $00

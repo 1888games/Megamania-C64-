@@ -50,11 +50,11 @@ LIVES:{
 		cmp #1
 		beq GameFinish
 
+		ldx SHIP.CurrentPlayer
+
 		lda #1
 		sta Dead, x
 
-	
-		
 		lda Dead
 		clc
 		adc Dead + 1
@@ -155,16 +155,6 @@ LIVES:{
 
 				jsr PLOT.PlotCharacter
 
-				// ldy CharOffset
-				// iny
-				// sty CharOffset
-
-				// lda Hearts, y
-				// ldy #LivesRow
-				// iny
-
-				// jsr PLOT.PlotCharacter
-
 				ldy CharOffset
 				iny
 				sty CharOffset
@@ -177,16 +167,6 @@ LIVES:{
 
 				jsr PLOT.PlotCharacter
 
-				// ldy CharOffset
-				// iny
-				// sty CharOffset
-
-				// lda Hearts, y
-
-				// ldy #LivesRow
-				// iny
-
-				// jsr PLOT.PlotCharacter
 
 				jmp EndLoop
 
@@ -201,20 +181,11 @@ LIVES:{
 
 				jsr PLOT.PlotCharacter
 
-				// ldy #LivesRow
-				// iny
-
-				// jsr PLOT.PlotCharacter
-
+			
 				inx
 				ldy #LivesRow
 
 				jsr PLOT.PlotCharacter
-
-				// ldy #LivesRow
-				// iny
-
-				// jsr PLOT.PlotCharacter
 
 		
 
